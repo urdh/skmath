@@ -1,0 +1,357 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2012 by Simon Sigurdhsson <ssimon@student.chalmers.se>
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Simon Sigurdhsson.
+%
+% This work consists of the files skmath.dtx and skmath.ins
+% and the derived filebase skmath.sty.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{skmath.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{skmath}
+%<*package>
+    [2012/08/30 v0.1 skmath improved math commands]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[commonsets]{skmath}[2012/08/30]
+\AtBeginDocument{\RecordChanges}
+\AtEndDocument{\PrintChanges}
+\begin{document}
+  \DocInput{skmath.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{173}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.1}{2012/08/30}{General: Initial version}
+%
+% \DoNotIndex{\newcommand,\newenvironment,\list,\endlist}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{skmath.dtx}
+% \title{The \textsf{skmath} package\thanks{This document
+%   corresponds to \textsf{skmath}~\fileversion, dated \filedate.}}
+% \author{Simon Sigurdhsson \\ \url{ssimon@student.chalmers.se}}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% This package provides improved and new math commands for superior
+% typesetting with lower effort.
+%
+% \section{Usage}
+% \subsection{Options}
+% As of version \fileversion, there is only one option: \texttt{commonsets}.
+% By default, it is disabled but if the option is given the package will
+% define \cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C} as blackboard variants of
+% the respective letters, to represent the common sets of numbers.
+%
+% \subsection{Commands}
+% \subsubsection{Common sets}
+% \DescribeMacro{\N}
+% \DescribeMacro{\Z}
+% \DescribeMacro{\Q}
+% \DescribeMacro{\R}
+% \DescribeMacro{\C}
+% As stated above, these commands
+% (\cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C})
+% are only available if the \texttt{commonsets}
+% option is given. They typeset the set of natural, integer, rational, real and
+% complex numbers respectively:
+% \begin{equation*}
+%    \N, \Z, \Q, \R, \C.
+% \end{equation*}
+%
+% \subsubsection{New commands}
+% The following commands are introduced to help improve typesetting.
+%
+% \DescribeMacro{\norm}
+% \DescribeMacro{\abs}
+% The commands \cs{norm} and \cs{abs}, quite expectedly, typeset the norm
+% ans absolute value of an expression, respectively. They have one mandatory
+% argument (the expression), and different norms can be achieved by appending
+% a subscript after the argument of \cs{norm}:
+% \begin{equation*}
+%   \norm{\vec{x}}_p = \left(\sum_{i=1}^n \abs{x_i}^p\right)^{\sfrac{1}{p}}.
+% \end{equation*}
+%
+% \DescribeMacro{\d}
+% There is also a command \cs{d}, with one mandatory argument, that typesets
+% the differential part of an integral:
+% \begin{equation*}
+%   \int_\R\! \frac{\sin{x}}{x} \d{x}.
+% \end{equation*}
+%
+% \subsection{Improved commands}
+% \subsubsection{Trigonometric functions}
+% \DescribeMacro{\sin}
+% \DescribeMacro{\cos}
+% \DescribeMacro{\tan}
+% \DescribeMacro{\cot}
+% \DescribeMacro{\arcsin}
+% \DescribeMacro{\arccos}
+% \DescribeMacro{\arctan}
+% Some common trigonometric functions --- \cs{sin}, \cs{cos}, \cs{tan},
+% \cs{cot}, \cs{arcsin}, \cs{arccos} and \cs{arctan} --- have been redefined
+% to typeset more easily. They now take one optional (does not apply to the
+% \cs{arc*} macros) and one mandatory argument;
+% the mandatory argument is the argument to the trigonometric function and the
+% optional argument is typeset in superscript between the function and its
+% argument, e.g. \(\sin[2]{\phi}\).
+%
+% \subsubsection{Logarithmic and exponential functions}
+% \DescribeMacro{\ln}
+% The natural logarithm macro \cs{ln} has also been redefined to require an
+% argument which is typeset as the argument of the logarithm.
+% \DescribeMacro{\log}
+% The related macro \cs{log} is redefined in a similar way, but also accepts
+% an optional argument denoting the base of the logarithm: \(\log[2]{x}\).
+%
+% The exponential, \cs{exp}, is redefined to typeset its argument as a
+% superscript of \(e\) in some display styles, and as an argument of
+% \(\mathrm{exp}\) otherwise:
+% \begin{equation*}
+%   \exp{\sqrt{2}\exp{x}}
+% \end{equation*}
+%
+% \subsubsection{Stylistic changes}
+% \DescribeMacro{\frac}
+% \DescribeMacro{\vec}
+% The \cs{frac} command has been changed to improve typesetting, and the
+% \cs{vec} command is defined as a copy of the \cs{vectorsym} command of 
+% the \textsf{isomath} package, as such: \(\vec{x}\).
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% The package implementation is very simple. First, we require some 
+% dependencies.
+%    \begin{macrocode}
+\RequirePackage[log-declarations=false]{xparse}
+\RequirePackage{kvoptions,amsmath,amssymb,mathtools,xfrac,isomath}
+%    \end{macrocode}
+%
+% We begin by declaring an option.
+%    \begin{macrocode}
+\SetupKeyvalOptions{family=skmath,prefix=skmath@}
+\DeclareBoolOption[false]{commonsets}
+\ProcessKeyvalOptions*
+%    \end{macrocode}
+%
+% We optionally provide commands to typeset common sets
+%    \begin{macrocode}
+\ifskmath@commonsets
+%    \end{macrocode}
+% \begin{macro}{\N}
+%    \begin{macrocode}
+  \newcommand\N{\ensuremath{\mathbb{N}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\Z}
+%    \begin{macrocode}
+  \newcommand\Z{\ensuremath{\mathbb{Z}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\Q}
+%    \begin{macrocode}
+  \newcommand\Q{\ensuremath{\mathbb{Q}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\R}
+%    \begin{macrocode}
+  \newcommand\R{\ensuremath{\mathbb{R}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\C}
+%    \begin{macrocode}
+  \newcommand\C{\ensuremath{\mathbb{C}}}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+\fi
+%    \end{macrocode}
+%
+% This is followed by commands to typeset the
+% norm and absolute value.
+% \begin{macro}{\abs}
+%    \begin{macrocode}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\norm}
+%    \begin{macrocode} 
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+%    \end{macrocode}
+% \end{macro}
+% 
+% We replace all trigonometric functions and some other
+% common functions with alternatives that take an argument
+% (or optionally, several arguments).
+%    \begin{macrocode}
+\let\skmath@sin\sin
+\let\skmath@cos\cos
+\let\skmath@tan\tan
+\let\skmath@cot\cot
+\let\skmath@arcsin\arcsin
+\let\skmath@arccos\arccos
+\let\skmath@arccos\arctan
+\let\skmath@ln\log
+\let\skmath@log\log
+\let\skmath@exp\exp
+%    \end{macrocode}
+% \begin{macro}{\sin}
+%    \begin{macrocode}
+\RenewDocumentCommand\sin{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@sin\left(#2\right)}}
+    {\ensuremath{\skmath@sin^{#1}\left(#2\right)}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\cos}
+%    \begin{macrocode}
+\RenewDocumentCommand\cos{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@cos\left(#2\right)}}
+    {\ensuremath{\skmath@cos^{#1}\left(#2\right)}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\tan}
+%    \begin{macrocode}
+\RenewDocumentCommand\tan{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@tan\left(#2\right)}}
+    {\ensuremath{\skmath@tan^{#1}\left(#2\right)}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\cot}
+%    \begin{macrocode}
+\RenewDocumentCommand\cot{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@cot\left(#2\right)}}
+    {\ensuremath{\skmath@cot^{#1}\left(#2\right)}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\arcsin}
+%    \begin{macrocode}
+\RenewDocumentCommand\arcsin{m}{%
+  \ensuremath{\skmath@arcsin\left(#1\right)}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\arccos}
+%    \begin{macrocode}
+\RenewDocumentCommand\arccos{m}{%
+  \ensuremath{\skmath@arccos\left(#1\right)}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\arctan}
+%    \begin{macrocode}
+\RenewDocumentCommand\arctan{m}{%
+  \ensuremath{\skmath@arctan\left(#1\right)}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ln}
+%    \begin{macrocode}
+\RenewDocumentCommand\ln{m}{%
+  \ensuremath{\skmath@ln\left(#1\right)}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\log}
+%    \begin{macrocode}
+\RenewDocumentCommand\log{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@log\left(#2\right)}}
+    {\ensuremath{\skmath@log_{#1}\left(#2\right)}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\exp}
+%    \begin{macrocode}
+\renewcommand\exp[1]{\ensuremath{\mathchoice%
+  {e^{#1}}%
+  {\skmath@exp\left(#1\right)}%
+  {\skmath@exp\left(#1\right)}%
+  {\skmath@exp\left(#1\right)}%
+}}
+%    \end{macrocode}
+% \end{macro}
+%
+% The fraction command is modified to improve typesetting.
+% \begin{macro}{\frac}
+%    \begin{macrocode}
+\renewcommand{\frac}[2]{\genfrac{}{}{}{}%
+             {\displaystyle #1}{\displaystyle #2}}
+%    \end{macrocode}
+% \end{macro}
+%
+% We introduce a command to typeset the differential part
+% of integrals, shamefully stolen from an answer on \TeX.SE.
+% \begin{macro}{\d}
+%    \begin{macrocode}  
+\renewcommand\d[1]{\ensuremath{\,\mathrm{d}#1%
+                   \@ifnextchar\d{\!}{}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% Finally, we define a nicer way to denote vectors.
+% \begin{macro}{\vec}
+%    \begin{macrocode}
+\let\vec\vectorsym
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
