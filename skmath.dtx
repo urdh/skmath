@@ -26,7 +26,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{skmath}
 %<*package>
-    [2012/08/30 v0.1 skmath improved math commands]
+    [2012/08/30 v0.1a skmath improved math commands]
 %</package>
 %
 %<*driver>
@@ -40,7 +40,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{173}
+% \CheckSum{174}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -60,6 +60,7 @@
 %
 %
 % \changes{v0.1}{2012/08/30}{General: Initial version}
+% \changes{v0.1a}{2012/08/30}{\cs{d}: Fixed obtuse errors}
 %
 % \DoNotIndex{\newcommand,\newenvironment,\list,\endlist}
 %
@@ -335,12 +336,20 @@
 %
 % We introduce a command to typeset the differential part
 % of integrals, shamefully stolen from an answer on \TeX.SE.
+% Definition is deferred until after all packages are loaded
+% to avoid collisions with other \cs{d} commands.
+%    \begin{macrocode}  
+\AtBeginDocument{%
+%    \end{macrocode}
 % \begin{macro}{\d}
 %    \begin{macrocode}  
-\renewcommand\d[1]{\ensuremath{\,\mathrm{d}#1%
+  \renewcommand\d[1]{\ensuremath{\,\mathrm{d}#1%
                    \@ifnextchar\d{\!}{}}}
 %    \end{macrocode}
 % \end{macro}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
 %
 % Finally, we define a nicer way to denote vectors.
 % \begin{macro}{\vec}
