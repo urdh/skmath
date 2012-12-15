@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2012 by Simon Sigurdhsson <ssimon@student.chalmers.se>
+% Copyright (C) 2012 by Simon Sigurdhsson <sigurdhsson@gmail.com>
 % ---------------------------------------------------------------------------
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -30,8 +30,9 @@
 %</package>
 %
 %<*driver>
-\documentclass{ltxdoc}
+\documentclass{ydoc}
 \usepackage[commonsets]{skmath}[2012/12/14]
+\usepackage{gitinfo}
 \AtBeginDocument{\RecordChanges}
 \AtEndDocument{\PrintChanges}
 \begin{document}
@@ -62,20 +63,40 @@
 % \changes{v0.1}{2012/08/30}{General: Initial version}
 % \changes{v0.1b}{2012/12/14}{General: Added \cs{bar} replacement}
 %
+% \let\pkg=\textsf
 % \DoNotIndex{\newcommand,\newenvironment,\list,\endlist}
 %
-% \providecommand*{\url}{\texttt}
-% \GetFileInfo{skmath.dtx}
-% \title{The \textsf{skmath} package\thanks{This document
-%   corresponds to \textsf{skmath}~\fileversion, dated \filedate.}}
-% \author{Simon Sigurdhsson \\ \url{ssimon@student.chalmers.se}}
+% \title{The \textbf{\textsf{skmath}} package}
+% \author{Simon Sigurdhsson}
+% \repository{https://github.com/urdh/skmath}
+% \email{sigurdhsson@gmail.com}
+% \date{Version\gitVtags{}%
+%       \\[-0.75ex]{\scriptsize\texttt{\gitAbbrevHash{}}}%
+%       \\[0.5ex]\gitAuthorDate{}}
 %
 % \maketitle
 %
-% \section{Introduction}
+% \ifpdf
+% \hypersetup{%
+%   pdfauthor   = {Simon Sigurdhsson <sigurdhsson@gmail.com>},
+%   pdftitle    = {The skmath package, \gitVtag{}, \gitAuthorDate{}},
+%   pdfsubject  = {Documentation of LaTeX package skmath.},
+%   pdfkeywords = {skmath, documentation, LaTeX}
+% }%
+% \fi
 %
-% This package provides improved and new math commands for superior
-% typesetting with lower effort.
+% \begin{abstract}
+% The \pkg{skmath} package provides improved and new math commands
+% for superior typesetting with less effort.
+% \end{abstract}
+%
+% \section{Introduction}
+% This package intends to provide helpful (re-)definitions of commands
+% related to typesetting mathematics, and specifically typesetting
+% them in a more intuitive, less verbose and more beautiful way.
+% It was originally not intended for use by the public, and as such
+% there may be incompatibilities with other packages of which I am
+% not aware, but I figured it could be useful to other people as well.
 %
 % \section{Usage}
 % \subsection{Options}
@@ -84,83 +105,100 @@
 % define \cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C} as blackboard variants of
 % the respective letters, to represent the common sets of numbers.
 %
-% \subsection{Commands}
-% \subsubsection{Common sets}
-% \DescribeMacro{\N}
-% \DescribeMacro{\Z}
-% \DescribeMacro{\Q}
-% \DescribeMacro{\R}
-% \DescribeMacro{\C}
-% As stated above, these commands
-% (\cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C})
-% are only available if the \texttt{commonsets}
-% option is given. They typeset the set of natural, integer, rational, real and
-% complex numbers respectively:
-% \begin{equation*}
-%    \N, \Z, \Q, \R, \C.
-% \end{equation*}
+% \subsection{New commands}
+% The package defines a number of new commands that aid in typesetting
+% certain mathematical formulae.
 %
-% \subsubsection{New commands}
-% The following commands are introduced to help improve typesetting.
+% \begin{DescribeMacrosTab}{lllll}
+%   \Macro\N &
+%   \Macro\Z &
+%   \Macro\Q &
+%   \Macro\R &
+%   \Macro\C
+% \end{DescribeMacrosTab}
+% These commands are only available if the \texttt{commonsets}
+% option is given. They typeset the set of natural, integer, rational,
+% real and complex numbers respectively:
+% \begin{example}
+%   \begin{equation*}
+%     \N, \Z, \Q, \R, \C.
+%   \end{equation*}
+% \end{example}
 %
-% \DescribeMacro{\norm}
-% \DescribeMacro{\abs}
-% The commands \cs{norm} and \cs{abs}, quite expectedly, typeset the norm
-% ans absolute value of an expression, respectively. They have one mandatory
-% argument (the expression), and different norms can be achieved by appending
-% a subscript after the argument of \cs{norm}:
-% \begin{equation*}
-%   \norm{\vec{x}}_p = \left(\sum_{i=1}^n \abs{x_i}^p\right)^{\sfrac{1}{p}}.
-% \end{equation*}
+% \DescribeMacro\norm{<expression>}
+% \DescribeMacro\abs{<expression>}
+% The commands \Macro\norm and \Macro\abs, quite expectedly, typeset
+% the norm ans absolute value of an expression, respectively. They
+% have one mandatory argument (the expression), and different norms
+% can be achieved by appending a subscript after the argument of 
+% \Macro\norm:
+% \begin{example}
+%   \begin{equation*}
+%     \norm{\vec{x}}_p = \left(\sum_{i=1}^n \abs{x_i}^p\right)^{\sfrac{1}{p}}
+%   \end{equation*}
+% \end{example}
 %
-% \DescribeMacro{\d}
-% There is also a command \cs{d}, with one mandatory argument, that typesets
-% the differential part of an integral:
-% \begin{equation*}
-%   \int_\R\! \frac{\sin{x}}{x} \d{x}.
-% \end{equation*}
+% \DescribeMacro\d{<variable>}
+% There is also a command \Macro\d, with one mandatory argument, that 
+% typesets the differential part of an integral:
+% \begin{example}
+%   \begin{equation*}
+%     \int_\R\! \frac{\sin{x}}{x} \d{x}
+%   \end{equation*}
+% \end{example}
 %
 % \subsection{Improved commands}
-% \subsubsection{Trigonometric functions}
-% \DescribeMacro{\sin}
-% \DescribeMacro{\cos}
-% \DescribeMacro{\tan}
-% \DescribeMacro{\cot}
-% \DescribeMacro{\arcsin}
-% \DescribeMacro{\arccos}
-% \DescribeMacro{\arctan}
-% Some common trigonometric functions --- \cs{sin}, \cs{cos}, \cs{tan},
-% \cs{cot}, \cs{arcsin}, \cs{arccos} and \cs{arctan} --- have been redefined
-% to typeset more easily. They now take one optional (does not apply to the
-% \cs{arc*} macros) and one mandatory argument;
-% the mandatory argument is the argument to the trigonometric function and the
-% optional argument is typeset in superscript between the function and its
-% argument, e.g. \(\sin[2]{\phi}\).
+% In addition to adding new commands, this package also redefines
+% already existing commands in a mostly backwards-compatible way
+% to improve their usefulness.
 %
-% \subsubsection{Logarithmic and exponential functions}
-% \DescribeMacro{\ln}
-% The natural logarithm macro \cs{ln} has also been redefined to require an
-% argument which is typeset as the argument of the logarithm.
-% \DescribeMacro{\log}
-% The related macro \cs{log} is redefined in a similar way, but also accepts
-% an optional argument denoting the base of the logarithm: \(\log[2]{x}\).
+% \begin{DescribeMacrosTab}{ll}
+%   \Macro\sin[<power>]{<expression>} &
+%   \Macro\arcsin{<expression>} \\
+%   \Macro\cos[<power>]{<expression>} &
+%   \Macro\arccos{<expression>} \\
+%   \Macro\tan[<power>]{<expression>} &
+%   \Macro\arctan{<expression>} \\
+%   \Macro\cot[<power>]{<expression>} &
+% \end{DescribeMacrosTab}
+% The trigonometric functions have been redefined
+% to typeset more easily. They typeset \meta{expression} as an
+% argument of the expression, and (if applicable) \meta{power} as
+% a superscript between the function and its argument,
+% \emph{e.g.} \(\sin[2]{\phi}\).
 %
-% The exponential, \cs{exp}, is redefined to typeset its argument as a
+% \DescribeMacro\ln{<expression>}
+% The natural logarithm macro \Macro\ln has also been redefined to 
+% require an argument which is typeset as the argument of the logarithm.
+% \DescribeMacro\log[<base>]{<expression>}
+% The related macro \Macro\log is redefined in a similar way, but also 
+% accepts an optional argument denoting the base of the logarithm:
+% \(\log[2]{x}\).
+%
+% \DescribeMacro\exp{<expression>}
+% The exponential, \Macro\exp, is redefined to typeset its argument as a
 % superscript of \(e\) in some display styles, and as an argument of
 % \(\mathrm{exp}\) otherwise:
 % \begin{equation*}
 %   \exp{\sqrt{2}\exp{x}}
 % \end{equation*}
 %
-% \subsubsection{Stylistic changes}
-% \DescribeMacro{\frac}
-% \DescribeMacro{\bar}
-% \DescribeMacro{\vec}
-% The \cs{frac} command has been changed to improve typesetting, and the
-% \cs{bar} command has been changed to cover the entire expression
-% (\emph{i.e.} \(\bar{uv}\)). Additionally, the
-% \cs{vec} command is defined as a copy of the \cs{vectorsym} command of 
-% the \textsf{isomath} package, as such: \(\vec{x}\).
+% \subsection{Stylistic changes}
+% Some commands have been redefined in a completely backwards-compatible
+% way to improve the end result of their typesetting.
+%
+% \DescribeMacro\frac{<numerator>}{<denominator>}
+% The \Macro\frac command has been changed to improve typesetting,
+% allowing displaystyle math in some settings.
+%
+% \begin{DescribeMacrosTab}{ll}
+%   \Macro\bar{<expression>} &
+%   \Macro\vec{<expression>}
+% \end{DescribeMacrosTab}
+% The \Macro\bar command has been changed to cover the entire 
+% \meta{expression} (\emph{i.e.} \(\bar{uv}\)), and \Macro\vec has
+% been changed to match the \cs{vectorsym} command provided by 
+% \pkg{isomath}.
 %
 % \StopEventually{}
 %
