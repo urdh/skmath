@@ -32,7 +32,6 @@
 %<*driver>
 \documentclass{ydoc}
 \usepackage[commonsets]{skmath}[2012/12/14]
-\usepackage{gitinfo}
 \AtBeginDocument{\RecordChanges}
 \AtEndDocument{\PrintChanges}
 \begin{document}
@@ -66,20 +65,22 @@
 % \let\pkg=\textsf
 % \DoNotIndex{\newcommand,\newenvironment,\list,\endlist}
 %
+% \GetFileInfo{skmath.dtx}
+%
 % \title{The \textbf{\textsf{skmath}} package}
 % \author{Simon Sigurdhsson}
 % \repository{https://github.com/urdh/skmath}
 % \email{sigurdhsson@gmail.com}
-% \date{Version\gitVtags{}%
-%       \\[-0.75ex]{\scriptsize\texttt{\gitAbbrevHash{}}}%
-%       \\[0.5ex]\gitAuthorDate{}}
+% \makeatletter
+% \date{Version \expandafter\@gobble\fileversion\\[0.5ex]\filedate}
+% \makeatother
 %
 % \maketitle
 %
 % \ifpdf
 % \hypersetup{%
 %   pdfauthor   = {Simon Sigurdhsson <sigurdhsson@gmail.com>},
-%   pdftitle    = {The skmath package, \gitVtag{}, \gitAuthorDate{}},
+%   pdftitle    = {The skmath package, \fileversion, \filedate},
 %   pdfsubject  = {Documentation of LaTeX package skmath.},
 %   pdfkeywords = {skmath, documentation, LaTeX}
 % }%
