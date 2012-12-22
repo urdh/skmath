@@ -1,0 +1,383 @@
+%% skmath improved math commands
+%%
+%% Copyright (C) 2012 by Simon Sigurdhsson <sigurdhsson@gmail.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Simon Sigurdhsson.
+%% 
+%% This work consists of the file skmath.tex and the derived
+%% and the derived file skmath.sty.
+\documentclass[commonsets,load]{skdoc}
+
+% Provide fake versions of the commands defined by the package
+\providecommand\bar\relax \providecommand\d\relax
+\providecommand\norm\relax \providecommand\abs\relax
+\providecommand\N\relax \providecommand\Z\relax
+\providecommand\Q\relax \providecommand\R\relax
+\providecommand\C\relax
+% Provide fake versions of the amsmath stuff as well
+\providecommand\sfrac\relax \providecommand\!\relax
+
+% Declare the target files
+\SelfPreambleTo{\mypreamble}
+\DeclareFile[key=package,preamble=\mypreamble]{skmath.sty}
+
+% This is where the documentation begins
+\begin{document}
+  % Change & version info
+  \version{0.1c}
+  \changes{0.1}{Initial version}
+  \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
+
+  % Metadata
+  \package[ctan,vcs=https://github.com/urdh/skmath]{skmath}
+  \author{Simon Sigurdhsson}
+  \email{sigurdhsson@gmail.com}
+
+  % First page
+  \maketitle
+  \begin{abstract}
+    The \thepackage\ package provides improved and new math commands
+    for superior typesetting with less effort.
+  \end{abstract}
+
+  \section{Introduction}
+  This package intends to provide helpful (re-)definitions of commands
+  related to typesetting mathematics, and specifically typesetting
+  them in a more intuitive, less verbose and more beautiful way.
+  It was originally not intended for use by the public, and as such
+  there may be incompatibilities with other packages of which I am
+  not aware, but I figured it could be useful to other people as well.
+
+  \section{Usage}
+  \subsection{Options}
+  As of version \theversion, there is only one option: \opt{commonsets}.
+  By default, it is disabled but if the option is given the package will
+  define \cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C} as blackboard 
+  variants of the respective letters, to represent the common sets
+  of numbers.
+
+  \subsection{New commands}
+  The package defines a number of new commands that aid in typesetting
+  certain mathematical formulae.
+ 
+  \begin{DescribeMacrosTab}{lllll}
+    \Macro\N &
+    \Macro\Z &
+    \Macro\Q &
+    \Macro\R &
+    \Macro\C
+  \end{DescribeMacrosTab}
+  These commands are only available if the \opt{commonsets}
+  option is given. They typeset the set of natural, integer, rational,
+  real and complex numbers respectively.
+  \begin{example}
+    \begin{equation*}
+      \N, \Z, \Q, \R, \C.
+    \end{equation*}
+  \end{example}
+ 
+  \DescribeMacro\norm{<expression>}
+  \DescribeMacro\abs{<expression>}
+  The commands \Macro\norm and \Macro\abs, quite expectedly, typeset
+  the norm ans absolute value of an expression, respectively. They
+  have one mandatory argument (the expression), and different norms
+  can be achieved by appending a subscript after the argument of 
+  \Macro\norm.
+  \begin{example}
+    \begin{equation*}
+      \norm{\vec{x}}_p = \left(\sum_{i=1}^n \abs{x_i}^p\right)^{\sfrac{1}{p}}
+    \end{equation*}
+  \end{example}
+ 
+  \DescribeMacro\d{<variable>}
+  There is also a command \Macro\d, with one mandatory argument, that 
+  typesets the differential part of an integral.
+  \begin{example}
+    \begin{equation*}
+      \int_\R\! \frac{\sin{x}}{x} \d{x}
+    \end{equation*}
+  \end{example}
+ 
+  \subsection{Improved commands}
+  In addition to adding new commands, this package also redefines
+  already existing commands in a mostly backwards-compatible way
+  to improve their usefulness.
+ 
+  \begin{DescribeMacrosTab}{ll}
+    \Macro\sin[<power>]{<expression>} &
+    \Macro\arcsin{<expression>} \\
+    \Macro\cos[<power>]{<expression>} &
+    \Macro\arccos{<expression>} \\
+    \Macro\tan[<power>]{<expression>} &
+    \Macro\arctan{<expression>} \\
+    \Macro\cot[<power>]{<expression>} &
+  \end{DescribeMacrosTab}
+  The trigonometric functions have been redefined
+  to typeset more easily. They typeset \meta{expression} as an
+  argument of the expression, and (if applicable) \meta{power} as
+  a superscript between the function and its argument,
+  \emph{e.g.} \(\sin[2]{\phi}\).
+ 
+  \DescribeMacro\ln{<expression>}
+  The natural logarithm macro \Macro\ln has also been redefined to 
+  require an argument which is typeset as the argument of the logarithm.
+  \DescribeMacro\log[<base>]{<expression>}
+  The related macro \Macro\log is redefined in a similar way, but also 
+  accepts an optional argument denoting the base of the logarithm:
+  \(\log[2]{x}\).
+ 
+  \DescribeMacro\exp{<expression>}
+  The exponential, \Macro\exp, is redefined to typeset its argument as a
+  superscript of \(e\) in some display styles, and as an argument of
+  \(\mathrm{exp}\) otherwise:
+  \begin{equation*}
+    \exp{\sqrt{2}\exp{x}}
+  \end{equation*}
+
+  \subsection{Stylistic changes}
+  Some commands have been redefined in a completely backwards-compatible
+  way to improve the end result of their typesetting.
+ 
+  \DescribeMacro\frac{<numerator>}{<denominator>}
+  The \Macro\frac command has been changed to improve typesetting,
+  allowing displaystyle math in some settings.
+ 
+  \begin{DescribeMacrosTab}{ll}
+    \Macro\bar{<expression>} &
+    \Macro\vec{<expression>}
+  \end{DescribeMacrosTab}
+  The \Macro\bar command has been changed to cover the entire 
+  \meta{expression} (\emph{i.e.} \(\bar{uv}\)), and \Macro\vec has
+  been changed to match the \cs{vectorsym} command provided by 
+  \pkg{isomath}.
+
+  \section{Implementation}
+  The package implementation is very simple. First, we do the standard
+  \LaTeXe\ preamble thing, then we require some dependencies.
+  \changes{0.1b}{Load \textsf{amsmath} with \texttt{intlimits} option}
+\begin{MacroCode}{package}
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{skmath}%
+    [2012/12/14 v0.1c skmath improved math commands]
+\RequirePackage{xparse}
+\RequirePackage[intlimits]{amsmath}
+\RequirePackage{kvoptions,amssymb,mathtools,xfrac,isomath}
+\end{MacroCode}
+
+  We begin by declaring an option.
+\begin{MacroCode}{package}
+\SetupKeyvalOptions{family=skmath,prefix=skmath@}
+\DeclareBoolOption[false]{commonsets}
+\ProcessKeyvalOptions*
+\end{MacroCode}
+
+  We optionally provide commands to typeset common sets.
+\begin{MacroCode}{package}
+\ifskmath@commonsets
+\end{MacroCode}
+  \begin{macro}{\N}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+  \NewDocumentCommand\N{}{\ensuremath{\mathbb{N}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\Z}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+  \NewDocumentCommand\Z{}{\ensuremath{\mathbb{Z}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\Q}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+  \NewDocumentCommand\Q{}{\ensuremath{\mathbb{Q}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\R}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+  \NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\C}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+  \NewDocumentCommand\C{}{\ensuremath{\mathbb{C}}}
+\end{MacroCode}
+  \end{macro}
+\begin{MacroCode}{package}
+\fi
+\end{MacroCode}
+ 
+  This is followed by commands to typeset the norm and absolute value.
+  \begin{macro}{\abs}
+\begin{MacroCode}{package}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\norm}
+\begin{MacroCode}{package}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\end{MacroCode}
+  \end{macro}
+  
+  We replace all trigonometric functions and some other
+  common functions with alternatives that take an argument
+  (or optionally, several arguments).
+\begin{MacroCode}{package}
+\let\skmath@sin\sin
+\let\skmath@cos\cos
+\let\skmath@tan\tan
+\let\skmath@cot\cot
+\let\skmath@arcsin\arcsin
+\let\skmath@arccos\arccos
+\let\skmath@arccos\arctan
+\let\skmath@ln\log
+\let\skmath@log\log
+\let\skmath@exp\exp
+\end{MacroCode}
+  \begin{macro}{\sin}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\sin{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@sin\left(#2\right)}}
+    {\ensuremath{\skmath@sin^{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\cos}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\cos{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@cos\left(#2\right)}}
+    {\ensuremath{\skmath@cos^{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\tan}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\tan{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@tan\left(#2\right)}}
+    {\ensuremath{\skmath@tan^{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\cot}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\cot{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@cot\left(#2\right)}}
+    {\ensuremath{\skmath@cot^{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\arcsin}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\arcsin{m}{%
+  \ensuremath{\skmath@arcsin\left(#1\right)}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\arccos}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\arccos{m}{%
+  \ensuremath{\skmath@arccos\left(#1\right)}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\arctan}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\arctan{m}{%
+  \ensuremath{\skmath@arctan\left(#1\right)}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\ln}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\ln{m}{%
+  \ensuremath{\skmath@ln\left(#1\right)}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\log}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\log{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\skmath@log\left(#2\right)}}
+    {\ensuremath{\skmath@log_{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\exp}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\exp{m}{\ensuremath{\mathchoice%
+  {e^{#1}}%
+  {\skmath@exp\left(#1\right)}%
+  {\skmath@exp\left(#1\right)}%
+  {\skmath@exp\left(#1\right)}%
+}}
+\end{MacroCode}
+  \end{macro}
+
+  The fraction command is modified to improve typesetting.
+  \begin{macro}{\frac}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\frac{mm}{\genfrac{}{}{}{}%
+             {\displaystyle #1}{\displaystyle #2}}
+\end{MacroCode}
+  \end{macro}
+ 
+  The \cs{bar} command is also modified to impove typesetting.
+  \begin{macro}{\bar}
+  \changes{0.1b}{Added \cs{bar} replacement}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\bar{m}{%
+    \ensuremath{\mkern 1.5mu\overline{\mkern-1.5mu{#1}\mkern-1.5mu}\mkern 1.5mu}}
+\end{MacroCode}
+  \end{macro}
+
+  We introduce a command to typeset the differential part
+  of integrals, shamefully stolen from an answer on \TeX.SE.
+  Definition is deferred until after all packages are loaded
+  to avoid collisions with other \cs{d} commands.
+\begin{MacroCode}{package}
+\AtBeginDocument{%
+\end{MacroCode}
+  \begin{macro}{\d}
+  \changes{0.1a}{Fixed obtuse errors}
+  \changes{0.1b}{Moved to \textsf{xparse} command definition}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\d{m}{\ensuremath{\,\mathrm{d}#1%
+                              \@ifnextchar\d{\!}{}}}
+\end{MacroCode}
+  \end{macro}
+\begin{MacroCode}{package}
+}
+\end{MacroCode}
+ 
+  Finally, we define a nicer way to denote vectors.
+  \begin{macro}{\vec}
+\begin{MacroCode}{package}
+\let\vec\vectorsym
+\end{MacroCode}
+  \end{macro}
+\begin{MacroCode}{package}
+\endinput
+\end{MacroCode}
+
+    \PrintChanges
+    \PrintIndex
+\end{document}
