@@ -14,7 +14,7 @@
 %% 
 %% The Current Maintainer of this work is Simon Sigurdhsson.
 %% 
-%% This work consists of the file skmath.tex and the derived
+%% This work consists of the file skmath.tex and Makefile
 %% and the derived file skmath.sty.
 
 This is version 0.1b of the skmath package, a package which provides
@@ -23,5 +23,6 @@ improved and new math commands for superior typesetting with lower effort.
 The following files are enclosed.
 
   README        - This file
+  Makefile      - GNU Makefile for making the package and documentation
   skmath.tex    - LaTeX source code of the package and documentation
   skmath.pdf    - PDF version of the documentation
