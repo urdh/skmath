@@ -16,16 +16,19 @@
 %% 
 %% This work consists of the file skmath.tex and Makefile
 %% and the derived file skmath.sty.
+\PassOptionsToPackage{intlimits}{amsmath}
 \documentclass[commonsets,load]{skdoc}
-
-% Provide fake versions of the commands defined by the package
-\providecommand\bar\relax \providecommand\d\relax
-\providecommand\norm\relax \providecommand\abs\relax
-\providecommand\N\relax \providecommand\Z\relax
-\providecommand\Q\relax \providecommand\R\relax
-\providecommand\C\relax
-% Provide fake versions of the amsmath stuff as well
-\providecommand\sfrac\relax \providecommand\!\relax
+\usepackage[intlimits]{amsmath}
+\ProvideDocumentCommand\d{m}{#1} 
+\ProvideDocumentCommand\abs{m}{#1} 
+\ProvideDocumentCommand\norm{m}{#1} 
+\ProvideDocumentCommand\abs{m}{#1} 
+\ProvideDocumentCommand\N{}{} 
+\ProvideDocumentCommand\Z{}{} 
+\ProvideDocumentCommand\Q{}{} 
+\ProvideDocumentCommand\R{}{} 
+\ProvideDocumentCommand\C{}{} 
+\ProvideDocumentCommand\sfrac{mm}{#1#2} 
 
 % Declare the target files
 \SelfPreambleTo{\mypreamble}
@@ -34,9 +37,10 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.1c}
+  \version{0.1d}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
+  \changes{0.1d}{Fixed fatal documentation and package errors}
 
   % Metadata
   \package[ctan,vcs=https://github.com/urdh/skmath]{skmath}
@@ -104,7 +108,7 @@
   typesets the differential part of an integral.
   \begin{example}
     \begin{equation*}
-      \int_\R\! \frac{\sin{x}}{x} \d{x}
+      \int_{\R}\! \frac{\sin{x}}{x} \d{x}
     \end{equation*}
   \end{example}
  
@@ -168,9 +172,9 @@
 \begin{MacroCode}{package}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{skmath}%
-    [2012/12/14 v0.1c skmath improved math commands]
+    [2012/12/28 v0.1d skmath improved math commands]
 \RequirePackage{xparse}
-\RequirePackage[intlimits]{amsmath}
+\PassOptionsToPackage{intlimits}{amsmath}
 \RequirePackage{kvoptions,amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
 
