@@ -14,7 +14,7 @@
 %% 
 %% The Current Maintainer of this work is Simon Sigurdhsson.
 %% 
-%% This work consists of the file skmath.tex and Makefile
+%% This work consists of the file skmath.tex
 %% and the derived file skmath.sty.
 
 This is version 0.1b of the skmath package, a package which provides
