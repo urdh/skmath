@@ -23,6 +23,11 @@
 \ProvideDocumentCommand\abs{m}{#1} 
 \ProvideDocumentCommand\norm{m}{#1} 
 \ProvideDocumentCommand\abs{m}{#1} 
+\ProvideDocumentCommand\P{m}{#1}
+\ProvideDocumentCommand\given{}{} 
+\ProvideDocumentCommand\E{m}{#1} 
+\ProvideDocumentCommand\var{m}{#1} 
+\ProvideDocumentCommand\cov{mm}{#1#2} 
 \ProvideDocumentCommand\N{}{} 
 \ProvideDocumentCommand\Z{}{} 
 \ProvideDocumentCommand\Q{}{} 
@@ -37,10 +42,11 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.1d}
+  \version{0.1e}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
+  \changes{0.1e}{Added statistics commands}
 
   % Metadata
   \package[ctan=skbundle,vcs=https://github.com/urdh/skmath]{skmath}
@@ -111,6 +117,34 @@
       \int_{\R}\! \frac{\sin{x}}{x} \d{x}
     \end{equation*}
   \end{example}
+
+  \DescribeMacro\E{<expression>}
+  The command \Macro\E typesets the expectation of a random variable.
+  \begin{example}
+    \begin{equation*}
+      \E{\hat{\mu}} = \mu
+    \end{equation*}
+  \end{example}
+
+  \DescribeMacro\P{<expression>\AlsoMacro\given <expression>}
+  The \Macro\P command typesets a probability. The \Macro\given command 
+  can be used to typeset conditional probabilities, within \Macro\P.
+  \begin{example}
+    \begin{equation*}
+      \P{A\given B} = \frac{\P{B\given A}\P{A}}{\P{B}}
+    \end{equation*}
+  \end{example} 
+
+  \DescribeMacro\var{<expression>}
+  \DescribeMacro\cov{<expression>}{<expression>}
+  The commands \Macro\var and \Macro\cov typeset the variance and
+  covariance of an expression.
+  \begin{example}
+    \begin{gather*}
+      \var{X} = \E{(X-\mu)^2}\\
+      \cov{X}{Y} = \E{XY}-\E{X}\E{Y}
+    \end{gather*}
+  \end{example}
  
   \subsection{Improved commands}
   In addition to adding new commands, this package also redefines
@@ -172,7 +206,7 @@
 \begin{MacroCode}{package}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{skmath}%
-    [2012/12/28 v0.1d skmath improved math commands]
+    [2013/02/18 v0.1e skmath improved math commands]
 \RequirePackage{xparse}
 \PassOptionsToPackage{intlimits}{amsmath}
 \RequirePackage{kvoptions,amssymb,mathtools,xfrac,isomath}
@@ -232,6 +266,56 @@
   \begin{macro}{\norm}
 \begin{MacroCode}{package}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\end{MacroCode}
+  \end{macro}
+
+  Next come the statistical commands.
+  \begin{macro}{\E}
+  \changes{0.1e}{Added \cs{E} command}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\E{m}{%
+  \ensuremath{\mathop{\mathrm{E}}\left[#1\right]}%
+}
+\end{MacroCode}
+  \end{macro}
+  The \Macro\P command saves any old \Macro\given command, replacing
+  it locally with the new \Macro\given command provided by the package.
+  \begin{macro}{\P}
+  \changes{0.1e}{Added \cs{P} command}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\P{m}{%
+  \ensuremath{\mathop{\mathrm{P}}%
+    \left(%
+    \let\skmath@given\given%
+\end{MacroCode}
+  \begin{macro}{\given}
+  \changes{0.1e}{Added \cs{given} command}
+\begin{MacroCode}{package}
+    \DeclareDocumentCommand\given{}{\mid}%
+\end{MacroCode}
+  \end{macro}
+\begin{MacroCode}{package}
+    #1%
+    \let\given\skmath@given%
+    \right)%
+  }%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\var}
+  \changes{0.1e}{Added \cs{var} command}
+\begin{MacroCode}{package}
+  \DeclareDocumentCommand\var{m}{%
+    \ensuremath{\mathop{\mathrm{Var}}\left(#1\right)}%
+  }
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\cov}
+  \changes{0.1e}{Added \cs{cov} command}
+\begin{MacroCode}{package}
+  \DeclareDocumentCommand\cov{mm}{%
+    \ensuremath{\mathop{\mathrm{Cov}}\left(#1,#2\right)}%
+  }
 \end{MacroCode}
   \end{macro}
   
