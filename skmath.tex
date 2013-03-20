@@ -43,12 +43,12 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.1f}
+  \version{0.1g}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
   \changes{0.1e}{Added statistics commands}
-  %\changes{0.2}{Documentation fixes}
+  \changes{0.1g}{Documentation fixes}
 
   % Metadata
   \package[ctan=skbundle,vcs=https://github.com/urdh/skmath]{skmath}
@@ -82,13 +82,11 @@
   The package defines a number of new commands that aid in typesetting
   certain mathematical formulae.
  
-  \begin{DescribeMacrosTab}{lllll}
-    \Macro\N &
-    \Macro\Z &
-    \Macro\Q &
-    \Macro\R &
-    \Macro\C
-  \end{DescribeMacrosTab}
+  \DescribeMacro\N 
+  \DescribeMacro\Z 
+  \DescribeMacro\Q 
+  \DescribeMacro\R 
+  \DescribeMacro\C
   These commands are only available if the \opt{commonsets}
   option is given. They typeset the set of natural, integer, rational,
   real and complex numbers respectively.
@@ -153,15 +151,13 @@
   already existing commands in a mostly backwards-compatible way
   to improve their usefulness.
  
-  \begin{DescribeMacrosTab}{ll}
-    \Macro\sin[<power>]{<expression>} &
-    \Macro\arcsin{<expression>} \\
-    \Macro\cos[<power>]{<expression>} &
-    \Macro\arccos{<expression>} \\
-    \Macro\tan[<power>]{<expression>} &
-    \Macro\arctan{<expression>} \\
-    \Macro\cot[<power>]{<expression>} &
-  \end{DescribeMacrosTab}
+  \DescribeMacro\sin[<power>]{<expression>} 
+  \DescribeMacro\arcsin{<expression>} 
+  \DescribeMacro\cos[<power>]{<expression>} 
+  \DescribeMacro\arccos{<expression>} 
+  \DescribeMacro\tan[<power>]{<expression>} 
+  \DescribeMacro\arctan{<expression>} 
+  \DescribeMacro\cot[<power>]{<expression>} 
   The trigonometric functions have been redefined
   to typeset more easily. They typeset \meta{expression} as an
   argument of the expression, and (if applicable) \meta{power} as
@@ -192,14 +188,26 @@
   The \Macro\frac command has been changed to improve typesetting,
   allowing displaystyle math in some settings.
  
-  \begin{DescribeMacrosTab}{ll}
-    \Macro\bar{<expression>} &
-    \Macro\vec{<expression>}
-  \end{DescribeMacrosTab}
+  \DescribeMacro\bar{<expression>}
+  \DescribeMacro\vec{<expression>}
   The \Macro\bar command has been changed to cover the entire 
   \meta{expression} (\emph{i.e.} \(\bar{uv}\)), and \Macro\vec has
   been changed to match the \cs{vectorsym} command provided by 
   \pkg{isomath}.
+
+  \section{Known issues}
+  A list of current issues is available in the Github repository of this
+  package\footnote{\url{https://github.com/urdh/skmath/issues}}, but as
+  of the release of \theversion, there is only one known issue:
+  \begin{description}
+      \item[\#4]  When using both \pkg{fontspec} and \thepackage, sometimes
+                  \LaTeX\ bails out saying that \enquote{\cs{bar} is already
+                  defined}. This is probably due to fonts defining their own
+                  \cs{bar}, and will happen with other font packages as well,
+                  but I haven't figured out a suitable solution yet.
+  \end{description}
+  If you discover any bugs in this package, please report them to the issue
+  tracker in the \thepackage\ Github repository.
 
   \section{Implementation}
   The package implementation is very simple. First, we do the standard
