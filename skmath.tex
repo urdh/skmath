@@ -198,14 +198,11 @@
   \section{Known issues}
   A list of current issues is available in the Github repository of this
   package\footnote{\url{https://github.com/urdh/skmath/issues}}, but as
-  of the release of \theversion, there is only one known issue:
-  \begin{description}
-      \item[\#4]  When using both \pkg{fontspec} and \thepackage, sometimes
-                  \LaTeX\ bails out saying that \enquote{\cs{bar} is already
-                  defined}. This is probably due to fonts defining their own
-                  \cs{bar}, and will happen with other font packages as well,
-                  but I haven't figured out a suitable solution yet.
-  \end{description}
+  of the release of \theversion, there are no known issues
+  %\begin{description}
+  %    \item[\#?]  ???
+  %\end{description}
+
   If you discover any bugs in this package, please report them to the issue
   tracker in the \thepackage\ Github repository.
 
@@ -216,7 +213,7 @@
 \begin{MacroCode}{package}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{skmath}%
-    [2013/03/24 v0.1h skmath improved math commands]
+    [2013/04/01 v0.1h skmath improved math commands]
 \RequirePackage{xparse}
 \PassOptionsToPackage{intlimits}{amsmath}
 \RequirePackage{kvoptions,amssymb,mathtools,xfrac,isomath}
@@ -442,22 +439,23 @@
 \end{MacroCode}
   \end{macro}
  
-  The \cs{bar} command is also modified to impove typesetting.
+  Definition of \cs{bar} and \cs{d} is deferred until after all
+  packages are loaded to avoid collisions with other packages.
+\begin{MacroCode}{package}
+\AtBeginDocument{%
+\end{MacroCode}
+  The \cs{bar} command is modified to impove typesetting.
   \begin{macro}{\bar}
   \changes{0.1b}{Added \cs{bar} replacement}
+  \changes{0.1h}{Wrap in \cs{AtBeginDocument}}
 \begin{MacroCode}{package}
-\RenewDocumentCommand\bar{m}{%
+\DeclareDocumentCommand\bar{m}{%
     \ensuremath{\mkern 1.5mu\overline{\mkern-1.5mu{#1}\mkern-1.5mu}\mkern 1.5mu}}
 \end{MacroCode}
   \end{macro}
 
   We introduce a command to typeset the differential part
   of integrals, shamefully stolen from an answer on \TeX.SE.
-  Definition is deferred until after all packages are loaded
-  to avoid collisions with other \cs{d} commands.
-\begin{MacroCode}{package}
-\AtBeginDocument{%
-\end{MacroCode}
   \begin{macro}{\d}
   \changes{0.1a}{Fixed obtuse errors}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
