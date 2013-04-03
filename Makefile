@@ -8,9 +8,9 @@ distclean: clean
 %.pdf: %.tex
 	pdflatex $<
 	makeglossaries $*
-	pdflatex $<
+	pdflatex -shell-escape $<
 	makeglossaries $*
-	pdflatex $<
+	pdflatex -shell-escape $<
 
 %.sty: %.pdf
 
