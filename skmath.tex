@@ -225,7 +225,7 @@
 \begin{MacroCode}{package}
 \RequirePackage{expl3,l3keys2e,xparse}
 \ProvidesExplPackage{skmath}
-    {2013/04/09}{0.1}{improved math commands}
+    {2013/04/09}{0.2}{improved math commands}
 \PassOptionsToPackage{intlimits}{amsmath}
 \RequirePackage{amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
@@ -305,7 +305,7 @@
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\P{m}{%
   \ensuremath{\operatorname{P}%
-    \left(%
+    \mkern-1.5mu\left(%
     \cs_set_eq:NN\__skmath_saved_given:\given%
 \end{MacroCode}
   \begin{macro}{\given}
@@ -494,7 +494,7 @@
   commonsets .code:n = 
     {\__skmath_define_common_sets:}
 }
-\ProcessKeysPackageOptions{skmath}
+\ProcessKeysOptions{skmath}
 \end{MacroCode}
 
 \begin{MacroCode}{package}

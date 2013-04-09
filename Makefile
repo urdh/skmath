@@ -5,7 +5,7 @@ clean:
 	rm -f *.sty
 distclean: clean
 
-%.pdf: %.sty
+%.pdf: %.tex %.sty
 	makeglossaries $*
 	pdflatex -shell-escape $<
 	makeglossaries $*
