@@ -5,14 +5,14 @@ clean:
 	rm -f *.sty
 distclean: clean
 
-%.pdf: %.tex
-	pdflatex $<
+%.pdf: %.sty
 	makeglossaries $*
 	pdflatex -shell-escape $<
 	makeglossaries $*
 	pdflatex -shell-escape $<
 
-%.sty: %.pdf
+%.sty: %.tex
+	pdflatex $<
 
 install: all
 	install -m 0644 skmath.sty $(TEXMFHOME)/tex/latex/skmath/skmath.sty
