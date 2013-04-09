@@ -18,7 +18,7 @@
 %% and the derived file skmath.sty.
 \PassOptionsToPackage{intlimits}{amsmath}
 \documentclass[commonsets,load]{skdoc}
-\usepackage[intlimits]{amsmath}
+\usepackage{amsmath}
 \usepackage{csquotes}
 \ProvideDocumentCommand\d{m}{#1} 
 \ProvideDocumentCommand\abs{m}{#1} 
@@ -40,15 +40,23 @@
 \SelfPreambleTo{\mypreamble}
 \DeclareFile[key=package,preamble=\mypreamble]{skmath.sty}
 
+% Hack for LaTeX3 code
+\ExplSyntaxOn
+\cs_set_protected_nopar:Npn\ExplHack{
+\char_set_catcode_letter:n{ 58 }
+\char_set_catcode_letter:n{ 95 } }
+\ExplSyntaxOff
+
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.1h}
+  \version{0.2}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
   \changes{0.1e}{Added statistics commands}
   \changes{0.1g}{Documentation fixes}
+  \changes{0.2}{Use \pkg{expl3} functionality throughout the package}
 
   % Metadata
   \package[ctan=skmath,vcs=https://github.com/urdh/skmath]{skmath}
@@ -90,11 +98,11 @@
   These commands are only available if the \opt{commonsets}
   option is given. They typeset the set of natural, integer, rational,
   real and complex numbers respectively.
-  \begin{example}
-    \begin{equation*}
-      \N, \Z, \Q, \R, \C.
-    \end{equation*}
-  \end{example}
+\begin{example}
+\begin{equation*}
+  \N, \Z, \Q, \R, \C.
+\end{equation*}
+\end{example}
  
   \DescribeMacro\norm{<expression>}
   \DescribeMacro\abs{<expression>}
@@ -103,48 +111,51 @@
   have one mandatory argument (the expression), and different norms
   can be achieved by appending a subscript after the argument of 
   \Macro\norm.
-  \begin{example}
-    \begin{equation*}
-      \norm{\vec{x}}_p = \left(\sum_{i=1}^n \abs{x_i}^p\right)^{\sfrac{1}{p}}
-    \end{equation*}
-  \end{example}
+\begin{example}
+\begin{equation*}
+  \norm{\vec{x}}_p =
+    \left(\sum_{i=1}^n \abs{x_i}^p\right)%
+      ^{\sfrac{1}{p}}
+\end{equation*}
+\end{example}
  
   \DescribeMacro\d{<variable>}
   There is also a command \Macro\d, with one mandatory argument, that 
   typesets the differential part of an integral.
-  \begin{example}
-    \begin{equation*}
-      \int_{\R}\! \frac{\sin{x}}{x} \d{x}
-    \end{equation*}
-  \end{example}
+\begin{example}
+\begin{equation*}
+  \int_{\R}\! \frac{\sin{x}}{x} \d{x}
+\end{equation*}
+\end{example}
 
   \DescribeMacro\E{<expression>}
   The command \Macro\E typesets the expectation of a random variable.
-  \begin{example}
-    \begin{equation*}
-      \E{\hat{\mu}} = \mu
-    \end{equation*}
-  \end{example}
+\begin{example}
+\begin{equation*}
+  \E{\hat{\mu}} = \mu
+\end{equation*}
+\end{example}
 
   \DescribeMacro\P{<expression>\AlsoMacro\given <expression>}
   The \Macro\P command typesets a probability. The \Macro\given command 
   can be used to typeset conditional probabilities, within \Macro\P.
-  \begin{example}
-    \begin{equation*}
-      \P{A\given B} = \frac{\P{B\given A}\P{A}}{\P{B}}
-    \end{equation*}
-  \end{example} 
+\begin{example}
+\begin{equation*}
+  \P{A\given B} =
+    \frac{\P{B\given A}\P{A}}{\P{B}}
+\end{equation*}
+\end{example} 
 
   \DescribeMacro\var{<expression>}
   \DescribeMacro\cov{<expression>}{<expression>}
   The commands \Macro\var and \Macro\cov typeset the variance and
   covariance of an expression.
-  \begin{example}
-    \begin{gather*}
-      \var{X} = \E{(X-\mu)^2}\\
-      \cov{X}{Y} = \E{XY}-\E{X}\E{Y}
-    \end{gather*}
-  \end{example}
+\begin{example}
+\begin{gather*}
+  \var{X} = \E{(X-\mu)^2}\\
+  \cov{X}{Y} = \E{XY}-\E{X}\E{Y}
+\end{gather*}
+\end{example}
  
   \subsection{Improved commands}
   In addition to adding new commands, this package also redefines
@@ -206,30 +217,23 @@
   If you discover any bugs in this package, please report them to the issue
   tracker in the \thepackage\ Github repository.
 
-  \Implementation
+  \Implementation\ExplHack
   \section{Implementation}
   The package implementation is very simple. First, we do the standard
   \LaTeXe\ preamble thing, then we require some dependencies.
   \changes{0.1b}{Load \textsf{amsmath} with \texttt{intlimits} option}
 \begin{MacroCode}{package}
-\NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesPackage{skmath}%
-    [2013/04/01 v0.1h skmath improved math commands]
-\RequirePackage{xparse}
+\RequirePackage{expl3,l3keys2e,xparse}
+\ProvidesExplPackage{skmath}
+    {2013/04/09}{0.1}{improved math commands}
 \PassOptionsToPackage{intlimits}{amsmath}
-\RequirePackage{kvoptions,amssymb,mathtools,xfrac,isomath}
-\end{MacroCode}
-
-  We begin by declaring an option.
-\begin{MacroCode}{package}
-\SetupKeyvalOptions{family=skmath,prefix=skmath@}
-\DeclareBoolOption[false]{commonsets}
-\ProcessKeyvalOptions*
+\RequirePackage{amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
 
   We optionally provide commands to typeset common sets.
+  \begin{macro}{\__skmath_define_common_sets:}
 \begin{MacroCode}{package}
-\ifskmath@commonsets
+\cs_new:Nn\__skmath_define_common_sets:{
 \end{MacroCode}
   \begin{macro}{\N}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
@@ -262,8 +266,9 @@
 \end{MacroCode}
   \end{macro}
 \begin{MacroCode}{package}
-\fi
+}
 \end{MacroCode}
+  \end{macro}
  
   This is followed by commands to typeset the norm and absolute value.
   \begin{macro}{\abs}
@@ -281,11 +286,12 @@
   \begin{macro}{\E}
   \changes{0.1e}{Added \cs{E} command}
   \changes{0.1f}{Fixed \enquote{Command \cs{E} already defined!} error}
+  \changes{0.2}{Use \cs{operatorname}}
   Here, we define \cs{E} after the preamble since it may break otherwise.
 \begin{MacroCode}{package}
 \AtBeginDocument{
   \DeclareDocumentCommand\E{m}{%
-    \ensuremath{\mathop{\mathrm{E}}\left[#1\right]}%
+    \ensuremath{\operatorname{E}\left[#1\right]}%
   }
 }
 \end{MacroCode}
@@ -294,11 +300,13 @@
   it locally with the new \Macro\given command provided by the package.
   \begin{macro}{\P}
   \changes{0.1e}{Added \cs{P} command}
+  \changes{0.2}{Use \cs{operatorname}, use \cs{cs_new_eq:NN} instead of
+                \cs{let}}
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\P{m}{%
-  \ensuremath{\mathop{\mathrm{P}}%
-    \left(%
-    \let\skmath@given\given%
+  \ensuremath{\operatorname{P}%
+    \mkern-1.5mu\left(%
+    \cs_set_eq:NN\__skmath_saved_given:\given%
 \end{MacroCode}
   \begin{macro}{\given}
   \changes{0.1e}{Added \cs{given} command}
@@ -308,7 +316,7 @@
   \end{macro}
 \begin{MacroCode}{package}
     #1%
-    \let\given\skmath@given%
+    \cs_set_eq:NN\given\__skmath_saved_given:%
     \right)%
   }%
 }
@@ -316,17 +324,19 @@
   \end{macro}
   \begin{macro}{\var}
   \changes{0.1e}{Added \cs{var} command}
+  \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
   \DeclareDocumentCommand\var{m}{%
-    \ensuremath{\mathop{\mathrm{Var}}\left(#1\right)}%
+    \ensuremath{\operatorname{Var}\left(#1\right)}%
   }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\cov}
   \changes{0.1e}{Added \cs{cov} command}
+  \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
   \DeclareDocumentCommand\cov{mm}{%
-    \ensuremath{\mathop{\mathrm{Cov}}\left(#1,#2\right)}%
+    \ensuremath{\operatorname{Cov}\left(#1,#2\right)}%
   }
 \end{MacroCode}
   \end{macro}
@@ -335,23 +345,23 @@
   common functions with alternatives that take an argument
   (or optionally, several arguments).
 \begin{MacroCode}{package}
-\let\skmath@sin\sin
-\let\skmath@cos\cos
-\let\skmath@tan\tan
-\let\skmath@cot\cot
-\let\skmath@arcsin\arcsin
-\let\skmath@arccos\arccos
-\let\skmath@arccos\arctan
-\let\skmath@ln\log
-\let\skmath@log\log
-\let\skmath@exp\exp
+\cs_new_eq:NN\__skmath_sin:\sin
+\cs_new_eq:NN\__skmath_cos:\cos
+\cs_new_eq:NN\__skmath_tan:\tan
+\cs_new_eq:NN\__skmath_cot:\cot
+\cs_new_eq:NN\__skmath_arcsin:\arcsin
+\cs_new_eq:NN\__skmath_arccos:\arccos
+\cs_new_eq:NN\__skmath_arctan:\arctan
+\cs_new_eq:NN\__skmath_ln:\log
+\cs_new_eq:NN\__skmath_log:\log
+\cs_new_eq:NN\__skmath_exp:\exp
 \end{MacroCode}
   \begin{macro}{\sin}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\sin{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\skmath@sin\left(#2\right)}}
-    {\ensuremath{\skmath@sin^{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_sin:\left(#2\right)}}
+    {\ensuremath{\__skmath_sin:\c_math_superscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -359,8 +369,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\cos{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\skmath@cos\left(#2\right)}}
-    {\ensuremath{\skmath@cos^{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_cos:\left(#2\right)}}
+    {\ensuremath{\__skmath_cos:\c_math_superscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -368,8 +378,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\tan{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\skmath@tan\left(#2\right)}}
-    {\ensuremath{\skmath@tan^{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_tan:\left(#2\right)}}
+    {\ensuremath{\__skmath_tan:\c_math_superscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -377,36 +387,36 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\cot{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\skmath@cot\left(#2\right)}}
-    {\ensuremath{\skmath@cot^{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_cot:\left(#2\right)}}
+    {\ensuremath{\__skmath_cot:\c_math_superscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arcsin}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arcsin{m}{%
-  \ensuremath{\skmath@arcsin\left(#1\right)}%
+  \ensuremath{\__skmath_arcsin:\left(#1\right)}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arccos}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arccos{m}{%
-  \ensuremath{\skmath@arccos\left(#1\right)}%
+  \ensuremath{\__skmath_arccos:\left(#1\right)}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arctan}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arctan{m}{%
-  \ensuremath{\skmath@arctan\left(#1\right)}%
+  \ensuremath{\__skmath_arctan:\left(#1\right)}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\ln}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\ln{m}{%
-  \ensuremath{\skmath@ln\left(#1\right)}%
+  \ensuremath{\__skmath_ln:\left(#1\right)}%
 }
 \end{MacroCode}
   \end{macro}
@@ -414,8 +424,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\log{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\skmath@log\left(#2\right)}}
-    {\ensuremath{\skmath@log_{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_log:\left(#2\right)}}
+    {\ensuremath{\__skmath_log:\c_math_subscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -423,10 +433,10 @@
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\exp{m}{\ensuremath{\mathchoice%
-  {e^{#1}}%
-  {\skmath@exp\left(#1\right)}%
-  {\skmath@exp\left(#1\right)}%
-  {\skmath@exp\left(#1\right)}%
+  {e\c_math_superscript_token{#1}}%
+  {\__skmath_exp:\left(#1\right)}%
+  {\__skmath_exp:\left(#1\right)}%
+  {\__skmath_exp:\left(#1\right)}%
 }}
 \end{MacroCode}
   \end{macro}
@@ -460,9 +470,10 @@
   \begin{macro}{\d}
   \changes{0.1a}{Fixed obtuse errors}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
+  \changes{0.2}{Use \cs{peek_meaning_ignore_spaces:NT} instead of \cs{@ifnextchar}}
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\d{m}{\ensuremath{\,\mathrm{d}#1%
-                              \@ifnextchar\d{\!}{}}}
+                              \peek_meaning_ignore_spaces:NT\d{\!}}}
 \end{MacroCode}
   \end{macro}
 \begin{MacroCode}{package}
@@ -471,10 +482,21 @@
  
   Finally, we define a nicer way to denote vectors.
   \begin{macro}{\vec}
+  \changes{0.2}{Use \cs{cs_new_eq:NN} instead of \cs{let}}
 \begin{MacroCode}{package}
-\let\vec\vectorsym
+\cs_set_eq:NN\vec\vectorsym
 \end{MacroCode}
   \end{macro}
+
+  We end by declaring an option.
+\begin{MacroCode}{package}
+\keys_define:nn{skmath}{
+  commonsets .code:n = 
+    {\__skmath_define_common_sets:}
+}
+\ProcessKeysOptions{skmath}
+\end{MacroCode}
+
 \begin{MacroCode}{package}
 \endinput
 \end{MacroCode}
