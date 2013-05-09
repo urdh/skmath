@@ -2,8 +2,12 @@ TEXMFHOME ?= $(shell kpsewhich -var-value TEXMFHOME)
 .PHONY: all clean distclean install dist
 all: skmath.pdf
 clean:
-	rm -f *.sty
+	rm -f *.gl? *.id? *.aux # problematic files
+#	rm -f *.bbl *.bcf *.bib *.blg *.xdy # biblatex
+	rm -f *.fls *.log *.out *.run.xml *.tox # junk
 distclean: clean
+	rm -f *.cls *.sty *.clo *.tar.gz *.tds.zip
+	git reset --hard
 
 %.pdf: %.tex %.sty
 	makeglossaries $*
