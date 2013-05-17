@@ -21,6 +21,7 @@
 \usepackage{amsmath}
 \usepackage{csquotes}
 \ProvideDocumentCommand\d{m}{#1} 
+\ProvideDocumentCommand\pd{smm}{#2#3} 
 \ProvideDocumentCommand\abs{m}{#1} 
 \ProvideDocumentCommand\norm{m}{#1} 
 \ProvideDocumentCommand\abs{m}{#1} 
@@ -127,6 +128,20 @@
   \int_{\R}\! \frac{\sin{x}}{x} \d{x}
 \end{equation*}
 \end{example}
+
+  \DescribeMacro\pd*{<function>}{<var>,<var>,...}
+  This macro typesets a partial derivative. The starred variant typesets
+  derivatives as subscripts, i.e. \(\pd*{f}{x^2,y}\), while the unstarred
+  variant typesets full fractions:
+\begin{example}
+\begin{equation*}
+  \pd{f}{x^m,y^n}
+\end{equation*}
+\end{example}
+
+  As the example shows, the comma-separated list of variables also
+  supports superscripts to denote the number of derivatives, and the
+  sum of the variables is automatically calculated.
 
   \DescribeMacro\E{<expression>}
   The command \Macro\E typesets the expectation of a random variable.
@@ -450,7 +465,122 @@
 \end{MacroCode}
   \end{macro}
  
-  Definition of \cs{bar} and \cs{d} is deferred until after all
+  We introduce a couple of helper macros for the \cs{pd} macro backend.
+  \begin{macro*}{\__skmath_if_numerical:n}[1]
+    {Token or string}
+\begin{MacroCode}{package}
+\prg_new_conditional:Npnn\__skmath_if_numerical:n#1{p,T,F,TF}{
+  \str_case_x:nnn{#1}{
+    {0}{\prg_return_true:}
+    {1}{\prg_return_true:}
+    {2}{\prg_return_true:}
+    {3}{\prg_return_true:}
+    {4}{\prg_return_true:}
+    {5}{\prg_return_true:}
+    {6}{\prg_return_true:}
+    {7}{\prg_return_true:}
+    {8}{\prg_return_true:}
+    {9}{\prg_return_true:}
+  }{\prg_return_false:}
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_vars_sum:n}[1]
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_pd_vars_sum:n#1{
+  \tl_clear:N\l_tmpa_tl
+  \int_zero:N\l_tmpa_int
+  \bool_set_true:N\l_tmpa_bool
+  \clist_set:Nn\l_tmpa_clist{#1}
+  \clist_map_inline:Nn\l_tmpa_clist{
+    \seq_set_split:Nnn\l_tmpa_seq{^}{##1}
+    \int_compare:nT{\seq_count:N\l_tmpa_seq<2}{
+      \seq_put_right:Nn\l_tmpa_seq{1}
+    }
+    \seq_get_right:NN\l_tmpa_seq\l_tmpb_tl
+    \__skmath_if_numerical:nTF{\tl_use:N\l_tmpb_tl}{
+      \int_add:Nn\l_tmpa_int{\tl_use:N\l_tmpb_tl}
+    }{
+      \bool_set_false:N\l_tmpa_bool
+      \tl_if_empty:NF\l_tmpa_tl{\tl_put_right:Nn\l_tmpa_tl{+}}
+      \tl_put_right:Nx\l_tmpa_tl{\tl_use:N\l_tmpb_tl}
+    }
+  }
+  \int_compare:nT{\l_tmpa_int>0}{\int_use:N\l_tmpa_int}
+  \bool_if:NF\l_tmpa_bool{
+    \int_compare:nT{\l_tmpa_int>0}{+}
+    \tl_use:N\l_tmpa_tl
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_superscript_vars:n}[1]
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_pd_superscript_vars:n#1{
+  \clist_set:Nn\l_tmpa_clist{#1}
+  \clist_map_inline:Nn\l_tmpa_clist{
+    \partial
+    \seq_set_split:Nnn\l_tmpa_seq{^}{##1}
+    \seq_pop:NN\l_tmpa_seq\l_tmpb_tl
+    \tl_use:N\l_tmpb_tl
+    \int_compare:nT{\seq_count:N\l_tmpa_seq>0}{
+      \seq_pop:NN\l_tmpa_seq\l_tmpb_tl
+      \c_math_superscript_token
+      \tl_use:N\l_tmpb_tl
+    }
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_subscript_vars:n}[1]
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_pd_subscript_vars:n#1{
+  \clist_set:Nn\l_tmpa_clist{#1}
+  \clist_map_inline:Nn\l_tmpa_clist{
+    \seq_set_split:Nnn\l_tmpa_seq{^}{##1}
+    \seq_pop:NN\l_tmpa_seq\l_tmpa_tl
+    \int_set:Nn\l_tmpa_int{1}
+    \int_compare:nT{\seq_count:N\l_tmpa_seq>0}{
+      \seq_pop:NN\l_tmpa_seq\l_tmpb_tl
+      \int_set:Nn\l_tmpa_int{\tl_use:N\l_tmpb_tl}
+    }
+    \prg_replicate:nn{\l_tmpa_int}{\tl_use:N\l_tmpa_tl}
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_fraction:nn}[2]
+    {Tokens representing a mathematical function}
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_pd_fraction:nn#1#2{
+  \frac{
+    \partial\c_math_superscript_token{
+      \__skmath_pd_vars_sum:n{#2}
+    }
+    {#1}
+  }{
+    \__skmath_pd_superscript_vars:n{#2}
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_subscript:nn}[2]
+    {Tokens representing a mathematical function}
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_pd_subscript:nn#1#2{
+  {#1}\c_math_subscript_token{
+    \__skmath_pd_subscript_vars:n{#2}
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+
+  Definition of \cs{bar}, \cs{pd} and \cs{d} is deferred until after all
   packages are loaded to avoid collisions with other packages.
 \begin{MacroCode}{package}
 \AtBeginDocument{%
@@ -462,6 +592,23 @@
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\bar{m}{%
     \ensuremath{\mkern 1.5mu\overline{\mkern-1.5mu{#1}\mkern-1.5mu}\mkern 1.5mu}}
+\end{MacroCode}
+  \end{macro}
+
+  This is the partial derivative macro, but most of the functionality
+  was defined as private macros earlier.
+  \begin{macro}{\pd}[3]
+    {Boolean distinguishing between starred and unstarred variant}
+    {Tokens representing a mathematical function}
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\pd{smm}{
+  \ensuremath{  
+    \IfBooleanTF{#1}
+      {\__skmath_pd_subscript:nn{#2}{#3}}
+      {\__skmath_pd_fraction:nn{#2}{#3}}
+  }
+}
 \end{MacroCode}
   \end{macro}
 
