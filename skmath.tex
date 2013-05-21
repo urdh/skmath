@@ -466,7 +466,10 @@
   \end{macro}
  
   We introduce a couple of helper macros for the \cs{pd} macro backend.
-  \begin{macro*}{\__skmath_if_numerical:n}[1]
+  \begin{macro*}{\__skmath_if_numerical_p:n}
+  \begin{macro*}{\__skmath_if_numerical:nT}
+  \begin{macro*}{\__skmath_if_numerical:nF}
+  \begin{macro*}{\__skmath_if_numerical:nTF}[1]
     {Token or string}
 \begin{MacroCode}{package}
 \prg_new_conditional:Npnn\__skmath_if_numerical:n#1{p,T,F,TF}{
@@ -485,6 +488,9 @@
 }
 \end{MacroCode}
   \end{macro*}
+  \end{macro*}
+  \end{macro*}
+  \end{macro*}
   \begin{macro*}{\__skmath_pd_vars_sum:n}[1]
     {Comma-separated list of variables, possibly with superscripts}
 \begin{MacroCode}{package}
@@ -495,7 +501,7 @@
   \clist_set:Nn\l_tmpa_clist{#1}
   \clist_map_inline:Nn\l_tmpa_clist{
     \seq_set_split:Nnn\l_tmpa_seq{^}{##1}
-    \int_compare:nT{\seq_count:N\l_tmpa_seq<2}{
+    \int_compare:nT{\seq_count:N\l_tmpa_seq<\c_two}{
       \seq_put_right:Nn\l_tmpa_seq{1}
     }
     \seq_get_right:NN\l_tmpa_seq\l_tmpb_tl
@@ -507,13 +513,38 @@
       \tl_put_right:Nx\l_tmpa_tl{\tl_use:N\l_tmpb_tl}
     }
   }
-  \int_compare:nT{\l_tmpa_int>0}{\int_use:N\l_tmpa_int}
+  \int_compare:nT{\l_tmpa_int>\c_zero}{\int_use:N\l_tmpa_int}
   \bool_if:NF\l_tmpa_bool{
-    \int_compare:nT{\l_tmpa_int>0}{+}
+    \int_compare:nT{\l_tmpa_int>\c_zero}{+}
     \tl_use:N\l_tmpa_tl
   }
 }
 \end{MacroCode}
+  \end{macro*}
+  \begin{macro*}{\__skmath_pd_if_vars_sum_above_one_p:n}
+  \begin{macro*}{\__skmath_pd_if_vars_sum_above_one:nT}
+  \begin{macro*}{\__skmath_pd_if_vars_sum_above_one:nF}
+  \begin{macro*}{\__skmath_pd_if_vars_sum_above_one:nTF}[1]
+    {Comma-separated list of variables, possibly with superscripts}
+\begin{MacroCode}{package}
+\prg_new_conditional:Npnn\__skmath_pd_if_vars_sum_above_one:n#1{p,T,F,TF}{
+  \clist_set:Nn\l_tmpa_clist{#1}
+  \int_compare:nTF{\clist_count:N\l_tmpa_clist>\c_one}{
+    \prg_return_true:
+  }{
+    \clist_pop:NN\l_tmpa_clist\l_tmpa_tl
+    \seq_set_split:NnV\l_tmpa_seq{^}{\l_tmpa_tl}
+    \int_compare:nTF{\seq_count:N\l_tmpa_seq<\c_two}{
+      \prg_return_false:
+    }{
+      \prg_return_true:
+    }
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+  \end{macro*}
+  \end{macro*}
   \end{macro*}
   \begin{macro*}{\__skmath_pd_superscript_vars:n}[1]
     {Comma-separated list of variables, possibly with superscripts}
@@ -542,8 +573,8 @@
   \clist_map_inline:Nn\l_tmpa_clist{
     \seq_set_split:Nnn\l_tmpa_seq{^}{##1}
     \seq_pop:NN\l_tmpa_seq\l_tmpa_tl
-    \int_set:Nn\l_tmpa_int{1}
-    \int_compare:nT{\seq_count:N\l_tmpa_seq>0}{
+    \int_set:Nn\l_tmpa_int{\c_one}
+    \int_compare:nT{\seq_count:N\l_tmpa_seq>\c_zero}{
       \seq_pop:NN\l_tmpa_seq\l_tmpb_tl
       \int_set:Nn\l_tmpa_int{\tl_use:N\l_tmpb_tl}
     }
@@ -558,8 +589,9 @@
 \begin{MacroCode}{package}
 \cs_new_nopar:Npn\__skmath_pd_fraction:nn#1#2{
   \frac{
-    \partial\c_math_superscript_token{
-      \__skmath_pd_vars_sum:n{#2}
+    \partial
+    \__skmath_pd_if_vars_sum_above_one:nT{#2}{
+      \c_math_superscript_token{\__skmath_pd_vars_sum:n{#2}}
     }
     {#1}
   }{
