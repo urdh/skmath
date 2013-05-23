@@ -16,7 +16,7 @@
 %% 
 %% This work consists of the file skmath.tex
 %% and the derived file skmath.sty.
-\PassOptionsToPackage{intlimits}{amsmath}
+\PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
 \documentclass[commonsets,load]{skdoc}
 \usepackage{amsmath}
 \usepackage{csquotes}
@@ -206,6 +206,23 @@
     \exp{\sqrt{2}\exp{x}}
   \end{equation*}
 
+  \DescribeMacro\min*[<domain>]{<expression>}
+  \DescribeMacro\argmin*[<domain>]{<expression>}
+  \DescribeMacro\max*[<domain>]{<expression>}
+  \DescribeMacro\argmax*[<domain>]{<expression>}
+  \DescribeMacro\sup*[<domain>]{<expression>}
+  \DescribeMacro\inf*[<domain>]{<expression>}
+  The maximum/minimum macros have been redefined in a manner similar to
+  the trigonometric functions. They typeset \meta{expression} inside
+  curly brackets (the starred version omits the brackets), with the
+  optional \meta{domain} typeset in a subscript after the operator
+  (\emph{e.g.} \(\min*[x\in\R_{+}]{f(x)}\)). Argument variants are also
+  provided, and the \meta{expression} is centered underneath the operator
+  if possible:
+  \begin{equation*}
+    \argmin*[x\in\R_{+}]{f(x)}
+  \end{equation*}
+
   \subsection{Stylistic changes}
   Some commands have been redefined in a completely backwards-compatible
   way to improve the end result of their typesetting.
@@ -236,12 +253,13 @@
   \section{Implementation}
   The package implementation is very simple. First, we do the standard
   \LaTeXe\ preamble thing, then we require some dependencies.
-  \changes{0.1b}{Load \textsf{amsmath} with \texttt{intlimits} option}
+  \changes{0.1b}{Load \pkg{amsmath} with \texttt{intlimits} option}
+  \changes{0.2a}{Load \pkg{amsmath} with more \texttt{limits} options}
 \begin{MacroCode}{package}
 \RequirePackage{expl3,l3keys2e,xparse}
 \ProvidesExplPackage{skmath}
     {2013/04/09}{0.2}{improved math commands}
-\PassOptionsToPackage{intlimits}{amsmath}
+\PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
 \RequirePackage{amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
 
@@ -370,6 +388,10 @@
 \cs_new_eq:NN\__skmath_ln:\log
 \cs_new_eq:NN\__skmath_log:\log
 \cs_new_eq:NN\__skmath_exp:\exp
+\cs_new_eq:NN\__skmath_min:\min
+\cs_new_eq:NN\__skmath_max:\max
+\cs_new_eq:NN\__skmath_sup:\sup
+\cs_new_eq:NN\__skmath_inf:\inf
 \end{MacroCode}
   \begin{macro}{\sin}
 \begin{MacroCode}{package}
@@ -453,6 +475,61 @@
   {\__skmath_exp:\left(#1\right)}%
   {\__skmath_exp:\left(#1\right)}%
 }}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro*}{\__skmath_minmax_backend:nnn}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_minmax_backend:nnnn#1#2#3#4{%
+  \use:c{__skmath_#1:}
+  \IfNoValueF{#3}{
+    \c_math_subscript_token{
+      \mathchoice{\mathclap{#3}}{#3}{#3}{#3}
+    }
+  }
+  \IfBooleanTF{#2}{#4}{\left\{#4\right\}}
+}
+\end{MacroCode}
+  \end{macro*}
+  \begin{macro}{\min}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\min{som}{%
+  \ensuremath{\__skmath_minmax_backend:nnnn{min}{#1}{#2}{#3}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\argmin}
+\begin{MacroCode}{package}
+\NewDocumentCommand\argmin{som}{%
+  \ensuremath{\arg\__skmath_minmax_backend:nnnn{min}{#1}{#2}{#3}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\max}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\max{som}{%
+  \ensuremath{\__skmath_max_minbackend:nnnn{max}{#1}{#2}{#3}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\argmax}
+\begin{MacroCode}{package}
+\NewDocumentCommand\argmax{som}{%
+  \ensuremath{\arg\__skmath_minmax_backend:nnnn{max}{#1}{#2}{#3}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\sup}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\sup{som}{%
+  \ensuremath{\__skmath_minmax_backend:nnnn{sup}{#1}{#2}{#3}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\inf}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\inf{som}{%
+  \ensuremath{\__skmath_minmax_backend:nnnn{inf}{#1}{#2}{#3}}
+}
 \end{MacroCode}
   \end{macro}
 
