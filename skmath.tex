@@ -53,7 +53,7 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.3}
+  \version{0.3a-dev}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
@@ -201,13 +201,15 @@
   accepts an optional argument denoting the base of the logarithm:
   \(\log[2]{x}\).
  
-  \DescribeMacro\exp{<expression>}
+  \DescribeMacro\exp*{<expression>}
   The exponential, \Macro\exp, is redefined to typeset its argument as a
   superscript of \(e\) in some display styles, and as an argument of
   \(\mathrm{exp}\) otherwise:
   \begin{equation*}
     \exp{\sqrt{2}\exp{x}}
   \end{equation*}
+  Additionally, it is possible to force the \(\mathrm{exp}\) mode by
+  using the starred variant.
 
   \DescribeMacro\min*[<domain>]{<expression>}
   \DescribeMacro\argmin*[<domain>]{<expression>}
@@ -471,12 +473,18 @@
   \end{macro}
   \begin{macro}{\exp}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
+  \changes{0.3a}{Added starred variant}
 \begin{MacroCode}{package}
-\RenewDocumentCommand\exp{m}{\ensuremath{\mathchoice%
-  {e\c_math_superscript_token{#1}}%
-  {\__skmath_exp:\left(#1\right)}%
-  {\__skmath_exp:\left(#1\right)}%
-  {\__skmath_exp:\left(#1\right)}%
+\RenewDocumentCommand\exp{sm}{\ensuremath{
+  \IfBooleanTF{#1}{
+    \__skmath_exp:\left(#2\right)
+  }{
+    \mathchoice
+      {e\c_math_superscript_token{#2}}
+      {\__skmath_exp:\left(#2\right)}
+      {\__skmath_exp:\left(#2\right)}
+      {\__skmath_exp:\left(#2\right)}
+  }
 }}
 \end{MacroCode}
   \end{macro}
