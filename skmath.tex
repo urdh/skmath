@@ -61,6 +61,7 @@
   \changes{0.1g}{Documentation fixes}
   \changes{0.2}{Use \pkg{expl3} functionality throughout the package}
   \changes{0.3}{Added \cs{min}/\cs{max} and friends. Added \cs{pd}}
+  \changes{0.3a}{Added \cs{sinh}, \cs{cosh} and \cs{tanh}}
 
   % Metadata
   \package[ctan=skmath,vcs=https://github.com/urdh/skmath]{skmath}
@@ -187,6 +188,9 @@
   \DescribeMacro\tan[<power>]{<expression>} 
   \DescribeMacro\arctan{<expression>} 
   \DescribeMacro\cot[<power>]{<expression>} 
+  \DescribeMacro\sinh[<power>]{<expression>} 
+  \DescribeMacro\cosh[<power>]{<expression>} 
+  \DescribeMacro\tanh[<power>]{<expression>} 
   The trigonometric functions have been redefined
   to typeset more easily. They typeset \meta{expression} as an
   argument of the expression, and (if applicable) \meta{power} as
@@ -390,6 +394,9 @@
 \cs_new_eq:NN\__skmath_arcsin:\arcsin
 \cs_new_eq:NN\__skmath_arccos:\arccos
 \cs_new_eq:NN\__skmath_arctan:\arctan
+\cs_new_eq:NN\__skmath_sinh:\sinh
+\cs_new_eq:NN\__skmath_cosh:\cosh
+\cs_new_eq:NN\__skmath_tanh:\tanh
 \cs_new_eq:NN\__skmath_ln:\log
 \cs_new_eq:NN\__skmath_log:\log
 \cs_new_eq:NN\__skmath_exp:\exp
@@ -452,6 +459,33 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arctan{m}{%
   \ensuremath{\__skmath_arctan:\left(#1\right)}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\sinh}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\sinh{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\__skmath_sinh:\left(#2\right)}}
+    {\ensuremath{\__skmath_sinh:\c_math_superscript_token{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\cosh}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\cosh{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\__skmath_cosh:\left(#2\right)}}
+    {\ensuremath{\__skmath_cosh:\c_math_superscript_token{#1}\left(#2\right)}}%
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\tanh}
+\begin{MacroCode}{package}
+\RenewDocumentCommand\tanh{om}{%
+  \IfNoValueTF{#1}
+    {\ensuremath{\__skmath_tanh:\left(#2\right)}}
+    {\ensuremath{\__skmath_tanh:\c_math_superscript_token{#1}\left(#2\right)}}%
 }
 \end{MacroCode}
   \end{macro}
