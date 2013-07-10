@@ -7,4 +7,4 @@ clean:
 	rm -f *.aux *.log *.out *.pdf *.yml
 
 %.pdf: %.tex
-	pdflatex --shell-escape $<
+	pdflatex -interaction=nonstopmode -halt-on-error --shell-escape $<

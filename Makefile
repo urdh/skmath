@@ -11,12 +11,12 @@ distclean: clean
 
 %.pdf: %.tex %.sty
 	makeglossaries $*
-	pdflatex -shell-escape $<
+	pdflatex -interaction=nonstopmode -halt-on-error -shell-escape $<
 	makeglossaries $*
-	pdflatex -shell-escape $<
+	pdflatex -interaction=nonstopmode -halt-on-error -shell-escape $<
 
 %.sty: %.tex
-	pdflatex $<
+	pdflatex -interaction=nonstopmode -halt-on-error $<
 
 install: all
 	install -m 0644 skmath.sty $(TEXMFHOME)/tex/latex/skmath/skmath.sty
