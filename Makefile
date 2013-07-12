@@ -26,9 +26,11 @@ install: all
 	-mktexlsr
 
 skmath.tds.zip: skmath.tex skmath.pdf skmath.sty
-	mkdir -p skmath/{tex,doc,source}/latex/skmath
+	mkdir -p skmath/tex/latex/skmath
 	cp skmath.sty skmath/tex/latex/skmath/skmath.sty
+	mkdir -p skmath/doc/latex/skmath
 	cp skmath.pdf skmath/doc/latex/skmath/skmath.pdf
+	mkdir -p skmath/source/latex/skmath
 	cp skmath.tex skmath/source/latex/skmath/skmath.tex
 	cp README skmath/doc/latex/skmath/README
 	cd skmath && zip -r ../skmath.tds.zip *
