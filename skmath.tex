@@ -250,10 +250,14 @@
   \section{Known issues}
   A list of current issues is available in the Github repository of this
   package\footnote{\url{https://github.com/urdh/skmath/issues}}, but as
-  of the release of \theversion, there are no known issues.
-  %\begin{description}
-  %    \item[\#?]  ???
-  %\end{description}
+  of the release of \theversion, there is one known issue.
+  \begin{description}
+      \item[\#15] The package is incompatible with (at least)
+        \pkg{blindtext}, when including math in the blind text. This
+        is due to the redifinition of \cs{sin} (and friends), which
+        is incompatible with the original \pkg{amsmath} definition.
+        This is a feature, not a bug.
+  \end{description}
 
   If you discover any bugs in this package, please report them to the issue
   tracker in the \thepackage\ Github repository.
