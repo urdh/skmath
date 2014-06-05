@@ -53,7 +53,7 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.3a}
+  \version{0.3b-dev}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
@@ -62,6 +62,7 @@
   \changes{0.2}{Use \pkg{expl3} functionality throughout the package}
   \changes{0.3}{Added \cs{min}/\cs{max} and friends. Added \cs{pd}}
   \changes{0.3a}{Added \cs{sinh}, \cs{cosh} and \cs{tanh}}
+  \changes{0.3b}{Detect empty arguments in trigonometric and logarithmic functions, fix \cs{ln}}
   % Don't forget to update the version number and release date of
   % the package declaration in the implementation!
 
@@ -198,6 +199,7 @@
   argument of the expression, and (if applicable) \meta{power} as
   a superscript between the function and its argument,
   \emph{e.g.} \(\sin[2]{\phi}\).
+  When the argument is empty, no parentheses are emitted: \(\cos{}\).
  
   \DescribeMacro\ln{<expression>}
   The natural logarithm macro \Macro\ln has also been redefined to 
@@ -206,6 +208,8 @@
   The related macro \Macro\log is redefined in a similar way, but also 
   accepts an optional argument denoting the base of the logarithm:
   \(\log[2]{x}\).
+  As with the trigonometric functions, no parentheses are emitted if
+  the mandatory argument is empty: \(\log{}\).
  
   \DescribeMacro\exp*{<expression>}
   The exponential, \Macro\exp, is redefined to typeset its argument as a
@@ -273,10 +277,38 @@
 \begin{MacroCode}{package}
 \RequirePackage{expl3,l3keys2e,xparse}
 \ProvidesExplPackage{skmath}
-    {2013/06/24}{0.3a}{improved math commands}
+    {2014/06/05}{0.3b-dev}{improved math commands}
 \PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
 \RequirePackage{amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
+
+  First, a utility conditional.
+  \begin{macro*}{\__skmath_if_novalue_or_empty:nF}[1]
+    {Token or string}
+\begin{MacroCode}{package}
+\prg_new_conditional:Npnn\__skmath_if_novalue_or_empty:n#1{F}{
+  \IfNoValueTF{#1}{
+    \prg_return_true:
+  }{
+    \tl_if_empty:nTF{#1}{
+      \prg_return_true:
+    }{
+      \prg_return_false:
+    }
+  }
+}
+\end{MacroCode}
+  \end{macro*}
+
+  And a helper macro.
+  \begin{macro*}{\__skmath_parens:n}[1]
+    {Argument to wrap in parentheses, unless empty}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_parens:n#1{
+  \__skmath_if_novalue_or_empty:nF{#1}{\left(#1\right)}
+}
+\end{MacroCode}
+  \end{macro*}
 
   We optionally provide commands to typeset common sets.
   \begin{macro}{\__skmath_define_common_sets:}
@@ -403,7 +435,7 @@
 \cs_new_eq:NN\__skmath_sinh:\sinh
 \cs_new_eq:NN\__skmath_cosh:\cosh
 \cs_new_eq:NN\__skmath_tanh:\tanh
-\cs_new_eq:NN\__skmath_ln:\log
+\cs_new_eq:NN\__skmath_ln:\ln
 \cs_new_eq:NN\__skmath_log:\log
 \cs_new_eq:NN\__skmath_exp:\exp
 \cs_new_eq:NN\__skmath_min:\min
@@ -415,8 +447,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\sin{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_sin:\left(#2\right)}}
-    {\ensuremath{\__skmath_sin:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_sin:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_sin:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -424,8 +456,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\cos{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_cos:\left(#2\right)}}
-    {\ensuremath{\__skmath_cos:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_cos:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_cos:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -433,8 +465,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\tan{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_tan:\left(#2\right)}}
-    {\ensuremath{\__skmath_tan:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_tan:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_tan:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -442,29 +474,29 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\cot{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_cot:\left(#2\right)}}
-    {\ensuremath{\__skmath_cot:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_cot:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_cot:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arcsin}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arcsin{m}{%
-  \ensuremath{\__skmath_arcsin:\left(#1\right)}%
+  \ensuremath{\__skmath_arcsin:\__skmath_parens:n{#1}}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arccos}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arccos{m}{%
-  \ensuremath{\__skmath_arccos:\left(#1\right)}%
+  \ensuremath{\__skmath_arccos:\__skmath_parens:n{#1}}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\arctan}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\arctan{m}{%
-  \ensuremath{\__skmath_arctan:\left(#1\right)}%
+  \ensuremath{\__skmath_arctan:\__skmath_parens:n{#1}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -472,8 +504,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\sinh{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_sinh:\left(#2\right)}}
-    {\ensuremath{\__skmath_sinh:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_sinh:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_sinh:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -481,8 +513,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\cosh{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_cosh:\left(#2\right)}}
-    {\ensuremath{\__skmath_cosh:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_cosh:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_cosh:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -490,15 +522,15 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\tanh{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_tanh:\left(#2\right)}}
-    {\ensuremath{\__skmath_tanh:\c_math_superscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_tanh:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_tanh:\c_math_superscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\ln}
 \begin{MacroCode}{package}
 \RenewDocumentCommand\ln{m}{%
-  \ensuremath{\__skmath_ln:\left(#1\right)}%
+  \ensuremath{\__skmath_ln:\__skmath_parens:n{#1}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -506,8 +538,8 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\log{om}{%
   \IfNoValueTF{#1}
-    {\ensuremath{\__skmath_log:\left(#2\right)}}
-    {\ensuremath{\__skmath_log:\c_math_subscript_token{#1}\left(#2\right)}}%
+    {\ensuremath{\__skmath_log:\__skmath_parens:n{#2}}}
+    {\ensuremath{\__skmath_log:\c_math_subscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
   \end{macro}
@@ -517,7 +549,7 @@
 \begin{MacroCode}{package}
 \RenewDocumentCommand\exp{sm}{\ensuremath{
   \IfBooleanTF{#1}{
-    \__skmath_exp:\left(#2\right)
+    \__skmath_exp:\__skmath_parens:n{#2}
   }{
     \mathchoice
       {e\c_math_superscript_token{#2}}
@@ -827,5 +859,5 @@
     \texttt{tex} or \texttt{latex}.
 
     \PrintChanges
-    \PrintIndex
+    %\PrintIndex
 \end{document}
