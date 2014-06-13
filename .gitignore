@@ -43,5 +43,6 @@
 *.ido
 *.ids
 *.tmp
+*.glsdefs
 skmath.tar.gz
 skmath.tds.zip
