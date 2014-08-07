@@ -373,40 +373,38 @@ We optionally load \pkg{isomath}, depending on notation style.
   We optionally provide commands to typeset common sets.
 \begin{MacroCode}{package}
 \bool_if:NT\g__skmath_define_common_sets_bool{
-  \AtBeginDocument{
 \end{MacroCode}
   \begin{macro}{\N}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
-    \NewDocumentCommand\N{}{\ensuremath{\mathbb{N}}}
+  \NewDocumentCommand\N{}{\ensuremath{\mathbb{N}}}
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\Z}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
-    \NewDocumentCommand\Z{}{\ensuremath{\mathbb{Z}}}
+  \NewDocumentCommand\Z{}{\ensuremath{\mathbb{Z}}}
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\Q}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
-    \NewDocumentCommand\Q{}{\ensuremath{\mathbb{Q}}}
+  \NewDocumentCommand\Q{}{\ensuremath{\mathbb{Q}}}
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\R}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
-    \NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
+  \NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\C}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
-    \NewDocumentCommand\C{}{\ensuremath{\mathbb{C}}}
+  \NewDocumentCommand\C{}{\ensuremath{\mathbb{C}}}
 \end{MacroCode}
   \end{macro}
 \begin{MacroCode}{package}
-  }
 }
 \end{MacroCode}
 
