@@ -300,13 +300,15 @@ We also declare the \enquote{public} options.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath}{
     commonsets .bool_set:N = \g__skmath_define_common_sets_bool,
-    commonsets .default:n = false,
+    commonsets .default:n = true,
+    commonsets .initial:n = false,
     notation .choice:,
     notation / iso .meta:nn = {skmath / internal}{},
     notation / german .meta:nn = {skmath / internal}{},
     notation / english .meta:nn = {skmath / internal}{},
     % Possibly more style sets... ?
-    notation .default:n = iso % Or is it? Perhaps a legacy option is required.
+    notation .default:n = iso, % Or is it? Perhaps a legacy option is required.
+    notation .value_required:
     % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
