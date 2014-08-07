@@ -299,8 +299,8 @@ We start by declaring internal options related to the notation styles.
   % * http://tex.stackexchange.com/q/14821/66
   integral-d .choice:,
   integral-d .value_required:,
-  integral-d / upright .code:n = { \cs_gset_eq:N\__skmath_integral_d:\operator@font },
-  integral-d / slanted .code:n = { \cs_gset_eq:N\__skmath_integral_d:\relax },
+  integral-d / upright .code:n = { \cs_gset_eq:NN\__skmath_integral_d:\operator@font },
+  integral-d / slanted .code:n = { \cs_gset_eq:NN\__skmath_integral_d:\relax },
   isomath .bool_set:N = \g__skmath_load_isomath_bool,
   isomath .value_required:,
 }
