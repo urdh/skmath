@@ -286,13 +286,23 @@
 \ProvidesExplPackage{skmath}
     {2014/06/13}{0.3b}{improved math commands}
 \PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
-\RequirePackage{amssymb,mathtools,xfrac,isomath}
+\RequirePackage{amssymb,mathtools,xfrac}
 \end{MacroCode}
 
 We start by declaring internal options related to the notation styles.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath / internal}{
-    % TODO
+    % More on this:
+    % * http://en.wikipedia.org/wiki/Typographical_conventions_in_mathematical_formulae
+    % * ISO 80000-2
+    % * http://www.tug.org/TUGboat/Articles/tb18-1/tb54becc.pdf
+    % * http://tex.stackexchange.com/q/14821/66
+    integral-d .choice:,
+    integral-d .value_required:,
+    integral-d / upright .code:n = { \cs_gset_eq:N\__skmath_integral_d:\operator@font },
+    integral-d / slanted .code:n = { \cs_gset_eq:N\__skmath_integral_d:\relax },
+    isomath .bool_set:N = \g__skmath_load_isomath_bool,
+    isomath .value_required:,
 }
 \end{MacroCode}
 
@@ -303,15 +313,33 @@ We also declare the \enquote{public} options.
     commonsets .default:n = true,
     commonsets .initial:n = false,
     notation .choice:,
-    notation / iso .meta:nn = {skmath / internal}{},
-    notation / german .meta:nn = {skmath / internal}{},
-    notation / english .meta:nn = {skmath / internal}{},
+    notation / iso .meta:nn = {skmath / internal}{
+        integral-d = upright,
+        isomath    = true,
+    },
+    notation / german .meta:nn = {skmath / internal}{
+        integral-d = upright,
+        isomath    = true,
+    },
+    notation / english .meta:nn = {skmath / internal}{
+        integral-d = slanted,
+        isomath    = true,
+    },
     % Possibly more style sets... ?
-    notation .default:n = iso, % Or is it? Perhaps a legacy option is required.
+    notation .initial:n = iso, % Or is it? Perhaps a legacy option is required.
     notation .value_required:
     % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
+\end{MacroCode}
+
+We optionally load \pkg{isomath}, depending on notation style.
+\begin{MacroCode}{package}
+\bool_if:NTF\g__skmath_load_isomath_bool{
+    \RequirePackage{isomath}
+}{
+    % TODO: check if there is an alternative package we should load here.
+}
 \end{MacroCode}
 
   Then, a utility conditional\ldots
@@ -842,7 +870,7 @@ We also declare the \enquote{public} options.
   \changes{0.2}{Use \cs{peek_meaning_ignore_spaces:NT} instead of \cs{@ifnextchar}}
   \changes{0.3b}{Use \cs{operator@font} instead of \cs{mathrm}}
 \begin{MacroCode}{package}
-\DeclareDocumentCommand\d{m}{\ensuremath{\,{\operator@font d}#1%
+\DeclareDocumentCommand\d{m}{\ensuremath{\,{\__skmath_integral_d: d}#1%
                               \peek_meaning_ignore_spaces:NT\d{\!}}}
 \end{MacroCode}
   \end{macro}
