@@ -292,43 +292,43 @@
 We start by declaring internal options related to the notation styles.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath / internal}{
-    % More on this:
-    % * http://en.wikipedia.org/wiki/Typographical_conventions_in_mathematical_formulae
-    % * ISO 80000-2
-    % * http://www.tug.org/TUGboat/Articles/tb18-1/tb54becc.pdf
-    % * http://tex.stackexchange.com/q/14821/66
-    integral-d .choice:,
-    integral-d .value_required:,
-    integral-d / upright .code:n = { \cs_gset_eq:N\__skmath_integral_d:\operator@font },
-    integral-d / slanted .code:n = { \cs_gset_eq:N\__skmath_integral_d:\relax },
-    isomath .bool_set:N = \g__skmath_load_isomath_bool,
-    isomath .value_required:,
+  % More on this:
+  % * http://en.wikipedia.org/wiki/Typographical_conventions_in_mathematical_formulae
+  % * ISO 80000-2
+  % * http://www.tug.org/TUGboat/Articles/tb18-1/tb54becc.pdf
+  % * http://tex.stackexchange.com/q/14821/66
+  integral-d .choice:,
+  integral-d .value_required:,
+  integral-d / upright .code:n = { \cs_gset_eq:N\__skmath_integral_d:\operator@font },
+  integral-d / slanted .code:n = { \cs_gset_eq:N\__skmath_integral_d:\relax },
+  isomath .bool_set:N = \g__skmath_load_isomath_bool,
+  isomath .value_required:,
 }
 \end{MacroCode}
 
 We also declare the \enquote{public} options.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath}{
-    commonsets .bool_set:N = \g__skmath_define_common_sets_bool,
-    commonsets .default:n = true,
-    commonsets .initial:n = false,
-    notation .choice:,
-    notation / iso .meta:nn = {skmath / internal}{
-        integral-d = upright,
-        isomath    = true,
-    },
-    notation / german .meta:nn = {skmath / internal}{
-        integral-d = upright,
-        isomath    = true,
-    },
-    notation / english .meta:nn = {skmath / internal}{
-        integral-d = slanted,
-        isomath    = true,
-    },
-    % Possibly more style sets... ?
-    notation .initial:n = iso, % Or is it? Perhaps a legacy option is required.
-    notation .value_required:
-    % Note also that the styles should probably affect isomath and/or other packages.
+  commonsets .bool_set:N = \g__skmath_define_common_sets_bool,
+  commonsets .default:n = true,
+  commonsets .initial:n = false,
+  notation .choice:,
+  notation / iso .meta:nn = {skmath / internal}{
+    integral-d = upright,
+    isomath    = true,
+  },
+  notation / german .meta:nn = {skmath / internal}{
+    integral-d = upright,
+    isomath    = true,
+  },
+  notation / english .meta:nn = {skmath / internal}{
+    integral-d = slanted,
+    isomath    = true,
+  },
+  % Possibly more style sets... ?
+  notation .initial:n = iso, % Or is it? Perhaps a legacy option is required.
+  notation .value_required:
+  % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
 \end{MacroCode}
@@ -336,9 +336,9 @@ We also declare the \enquote{public} options.
 We optionally load \pkg{isomath}, depending on notation style.
 \begin{MacroCode}{package}
 \bool_if:NTF\g__skmath_load_isomath_bool{
-    \RequirePackage{isomath}
+  \RequirePackage{isomath}
 }{
-    % TODO: check if there is an alternative package we should load here.
+  % TODO: check if there is an alternative package we should load here.
 }
 \end{MacroCode}
 
