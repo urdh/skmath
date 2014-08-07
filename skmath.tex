@@ -89,11 +89,17 @@
 
   \section{Usage}
   \subsection{Options}
-  As of version \theversion, there is only one option: \opt{commonsets}.
-  By default, it is disabled but if the option is given the package will
-  define \cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C} as blackboard
+  As of version \theversion, the package provides two key-value options.
+
+  \Option{commonsets}\WithValues{true,false}\AndDefault{false}
+  Optionally define \cs{N}, \cs{Z}, \cs{Q}, \cs{R} and \cs{C} as blackboard
   variants of the respective letters, to represent the common sets
   of numbers.
+
+  \Option{notation}\WithValues{iso,english,german}\AndDefault{iso}
+  This option controls the style of a few typographic elements that differ
+  between countries and standards (such as the style of integrals, derivatives
+  and greek letters).
 
   \subsection{New commands}
   The package defines a number of new commands that aid in typesetting
@@ -283,11 +289,25 @@
 \RequirePackage{amssymb,mathtools,xfrac,isomath}
 \end{MacroCode}
 
-We start by declaring an option.
+We start by declaring internal options related to the notation styles.
+\begin{MacroCode}{package}
+\keys_define:nn{skmath / internal}{
+    % TODO
+}
+\end{MacroCode}
+
+We also declare the \enquote{public} options.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath}{
     commonsets .bool_set:N = \g__skmath_define_common_sets_bool,
-    commonsets .default:n = false
+    commonsets .default:n = false,
+    notation .choice:,
+    notation / iso .meta:nn = {skmath / internal}{},
+    notation / german .meta:nn = {skmath / internal}{},
+    notation / english .meta:nn = {skmath / internal}{},
+    % Possibly more style sets... ?
+    notation .default:n = iso % Or is it? Perhaps a legacy option is required.
+    % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
 \end{MacroCode}
