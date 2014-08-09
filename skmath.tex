@@ -36,6 +36,8 @@
 \ProvideDocumentCommand\R{}{}
 \ProvideDocumentCommand\C{}{}
 \ProvideDocumentCommand\P{}{}
+\ProvideDocumentCommand\ii{}{i}
+\ProvideDocumentCommand\jj{}{j}
 \ProvideDocumentCommand\sfrac{mm}{#1#2}
 \ProvideDocumentCommand\argmin{om}{#1}
 \ProvideDocumentCommand\argmax{om}{#1}
@@ -120,6 +122,13 @@
   \N, \Z, \Q, \R, \C, \P.
 \end{equation*}
 \end{example}
+
+  \DescribeMacro\ii
+  \DescribeMacro\jj
+  These commands typeset the imaginary unit (either \(\ii\) as used in
+  mathematics or \(\jj\) as used in electrotechnology). While normal use
+  of the package simply results in italic characters, setting the \opt{notation}
+  option to \texttt{iso} will set these upright.
 
   \DescribeMacro\norm{<expression>}
   \DescribeMacro\abs{<expression>}
@@ -262,6 +271,13 @@
   been changed to match the \cs{vectorsym} command provided by
   \pkg{isomath}.
 
+  \DescribeMacro\Re{<expression>}
+  \DescribeMacro\Im{<expression>}
+  These commands typeset the real and imaginary part of a number. Standard use
+  of the package takes definitions roughly from \pkg{amsmath}, while setting
+  the \opt{notation} option to \texttt{iso} changes the definitions to match
+  ISO~80000-2.
+
   \section{Known issues}
   A list of current issues is available in the Github repository of this
   package\footnote{\url{https://github.com/urdh/skmath/issues}}, but as
@@ -309,6 +325,12 @@ We start by declaring internal options related to the notation styles.
   natural-log .value_required:,
   natural-log / upright .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{\operator@font e}} },
   natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{e}} },
+  imaginary-unit .choice:,
+  imaginary-unit .value_required:,
+  imaginary-unit / upright .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{{\operator@font #1}} },
+  imaginary-unit / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{{#1}} },
+  complex-part-symbols .bool_set_inverse:N = \g__skmath_iso_complex_parts_bool,
+  complex-part-symbols .value_required:,
 }
 \end{MacroCode}
 
@@ -324,21 +346,29 @@ We also declare the \enquote{public} options.
     integral-d = upright,
     isomath    = true,
     natural-log= upright,
+    imaginary-unit = upright,
+    complex-part-symbols = false,
   },
   notation / german .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
     natural-log= slanted, %???
+    imaginary-unit = slanted, %???
+    complex-part-symbols = true, %???
   },
   notation / english .meta:nn = {skmath / internal}{
     integral-d = slanted,
     isomath    = true,
     natural-log= slanted, %???
+    imaginary-unit = slanted, %???
+    complex-part-symbols = true, %???
   },
   notation / legacy .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
     natural-log= slanted,
+    imaginary-unit = slanted,
+    complex-part-symbols = true,
   }
   % Possibly more style sets... ?
   notation .initial:n = legacy, % Or is it? Perhaps a legacy option is required.
@@ -428,6 +458,38 @@ We optionally load \pkg{isomath}, depending on notation style.
 \begin{MacroCode}{package}
 }
 \end{MacroCode}
+
+  Then, macros related to complex numbers are defined.
+  \begin{macro}{\ii}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\ii{}{\ensuremath{\__skmath_imaginary_unit:n{i}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\jj}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\jj{}{\ensuremath{\__skmath_imaginary_unit:n{j}}}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\Re}
+\begin{MacroCode}{package}
+\bool_if:NTF\g__skmath_iso_complex_parts_bool{
+  \cs_new_eq:NN\__skmath_Re:\Re
+  \DeclareDocumentCommand\Re{m}{\ensuremath{\__skmath_Re:\__skmath_parens:n{#1}}}
+}{
+  \DeclareDocumentCommand\Re{m}{\ensuremath{{\operator@font Re}{#1}}}
+}
+\end{MacroCode}
+  \end{macro}
+  \begin{macro}{\Im}
+\begin{MacroCode}{package}
+\bool_if:NTF\g__skmath_iso_complex_parts_bool{
+  \cs_new_eq:NN\__skmath_Im:\Im
+  \DeclareDocumentCommand\Im{m}{\ensuremath{\__skmath_Im:\__skmath_parens:n{#1}}}
+}{
+  \DeclareDocumentCommand\Im{m}{\ensuremath{{\operator@font Im}{#1}}}
+}
+\end{MacroCode}
+  \end{macro}
 
   This is followed by commands to typeset the norm and absolute value.
   \begin{macro}{\abs}
