@@ -97,7 +97,7 @@
   variants of the respective letters, to represent the common sets
   of numbers.
 
-  \Option{notation}\WithValues{iso,english,german}\AndDefault{iso}
+  \Option{notation}\WithValues{iso,english,german,legacy}\AndDefault{legacy}
   This option controls the style of a few typographic elements that differ
   between countries and standards (such as the style of integrals, derivatives
   and greek letters).
@@ -305,6 +305,10 @@ We start by declaring internal options related to the notation styles.
   integral-d / slanted .code:n = { \cs_gset_eq:NN\__skmath_integral_d:\relax },
   isomath .bool_set:N = \g__skmath_load_isomath_bool,
   isomath .value_required:,
+  natural-log .choice:,
+  natural-log .value_required:,
+  natural-log / upright .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_base_fmt:n#1{{\operator@font #1}} },
+  natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_base_fmt:n#1{{#1}} },
 }
 \end{MacroCode}
 
@@ -314,21 +318,30 @@ We also declare the \enquote{public} options.
   commonsets .bool_set:N = \g__skmath_define_common_sets_bool,
   commonsets .default:n = true,
   commonsets .initial:n = false,
+  % TODO: write tests for the notation option
   notation .choice:,
   notation / iso .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
+    natural-log= upright,
   },
   notation / german .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
+    natural-log= slanted, %???
   },
   notation / english .meta:nn = {skmath / internal}{
     integral-d = slanted,
     isomath    = true,
+    natural-log= slanted, %???
   },
+  notation / legacy .meta:nn = {skmath / internal}{
+    integral-d = upright,
+    isomath    = true,
+    natural-log= slanted,
+  }
   % Possibly more style sets... ?
-  notation .initial:n = iso, % Or is it? Perhaps a legacy option is required.
+  notation .initial:n = legacy, % Or is it? Perhaps a legacy option is required.
   notation .value_required:
   % Note also that the styles should probably affect isomath and/or other packages.
 }
@@ -618,7 +631,7 @@ We optionally load \pkg{isomath}, depending on notation style.
     \__skmath_exp:\__skmath_parens:n{#2}
   }{
     \mathchoice
-      {e\c_math_superscript_token{#2}}
+      {\__skmath_natural_log_base_fmt:n{e}\c_math_superscript_token{#2}}
       {\__skmath_exp:\left(#2\right)}
       {\__skmath_exp:\left(#2\right)}
       {\__skmath_exp:\left(#2\right)}
