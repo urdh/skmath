@@ -301,14 +301,14 @@ We start by declaring internal options related to the notation styles.
   % * http://tex.stackexchange.com/q/14821/66
   integral-d .choice:,
   integral-d .value_required:,
-  integral-d / upright .code:n = { \cs_gset_eq:NN\__skmath_integral_d:\operator@font },
-  integral-d / slanted .code:n = { \cs_gset_eq:NN\__skmath_integral_d:\relax },
+  integral-d / upright .code:n = { \cs_gset_nopar:Npn\__skmath_integral_d:{{\operator@font d}} },
+  integral-d / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_integral_d:{{d}} },
   isomath .bool_set:N = \g__skmath_load_isomath_bool,
   isomath .value_required:,
   natural-log .choice:,
   natural-log .value_required:,
-  natural-log / upright .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_base_fmt:n#1{{\operator@font #1}} },
-  natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_base_fmt:n#1{{#1}} },
+  natural-log / upright .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{\operator@font e}} },
+  natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{e}} },
 }
 \end{MacroCode}
 
@@ -631,7 +631,7 @@ We optionally load \pkg{isomath}, depending on notation style.
     \__skmath_exp:\__skmath_parens:n{#2}
   }{
     \mathchoice
-      {\__skmath_natural_log_base_fmt:n{e}\c_math_superscript_token{#2}}
+      {\__skmath_natural_log_e:\c_math_superscript_token{#2}}
       {\__skmath_exp:\left(#2\right)}
       {\__skmath_exp:\left(#2\right)}
       {\__skmath_exp:\left(#2\right)}
@@ -891,7 +891,7 @@ We optionally load \pkg{isomath}, depending on notation style.
   \changes{0.2}{Use \cs{peek_meaning_ignore_spaces:NT} instead of \cs{@ifnextchar}}
   \changes{0.3b}{Use \cs{operator@font} instead of \cs{mathrm}}
 \begin{MacroCode}{package}
-\DeclareDocumentCommand\d{m}{\ensuremath{\,{\__skmath_integral_d: d}#1%
+\DeclareDocumentCommand\d{m}{\ensuremath{\,\__skmath_integral_d: #1%
                               \peek_meaning_ignore_spaces:NT\d{\!}}}
 \end{MacroCode}
   \end{macro}
