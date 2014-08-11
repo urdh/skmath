@@ -345,34 +345,34 @@ We also declare the \enquote{public} options.
   notation / iso .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
-    natural-log= upright,
+    natural-log = upright,
     imaginary-unit = upright,
     complex-part-symbols = false,
   },
   notation / german .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
-    natural-log= slanted, %???
+    natural-log = slanted, %???
     imaginary-unit = slanted, %???
     complex-part-symbols = true, %???
   },
   notation / english .meta:nn = {skmath / internal}{
     integral-d = slanted,
     isomath    = true,
-    natural-log= slanted, %???
+    natural-log = slanted, %???
     imaginary-unit = slanted, %???
     complex-part-symbols = true, %???
   },
   notation / legacy .meta:nn = {skmath / internal}{
     integral-d = upright,
     isomath    = true,
-    natural-log= slanted,
+    natural-log = slanted,
     imaginary-unit = slanted,
     complex-part-symbols = true,
-  }
+  },
   % Possibly more style sets... ?
   notation .initial:n = legacy, % Or is it? Perhaps a legacy option is required.
-  notation .value_required:
+  notation .value_required:,
   % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
@@ -547,18 +547,18 @@ We optionally load \pkg{isomath}, depending on notation style.
   \changes{0.1e}{Added \cs{var} command}
   \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
-  \DeclareDocumentCommand\var{m}{%
-    \ensuremath{\operatorname{Var}\left(#1\right)}%
-  }
+\DeclareDocumentCommand\var{m}{%
+  \ensuremath{\operatorname{Var}\left(#1\right)}%
+}
 \end{MacroCode}
   \end{macro}
   \begin{macro}{\cov}
   \changes{0.1e}{Added \cs{cov} command}
   \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
-  \DeclareDocumentCommand\cov{mm}{%
-    \ensuremath{\operatorname{Cov}\left(#1,#2\right)}%
-  }
+\DeclareDocumentCommand\cov{mm}{%
+  \ensuremath{\operatorname{Cov}\left(#1,#2\right)}%
+}
 \end{MacroCode}
   \end{macro}
 
