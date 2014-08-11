@@ -35,7 +35,6 @@
 \ProvideDocumentCommand\Q{}{}
 \ProvideDocumentCommand\R{}{}
 \ProvideDocumentCommand\C{}{}
-\ProvideDocumentCommand\P{}{}
 \ProvideDocumentCommand\ii{}{i}
 \ProvideDocumentCommand\jj{}{j}
 \ProvideDocumentCommand\sfrac{mm}{#1#2}
@@ -113,13 +112,12 @@
   \DescribeMacro\Q
   \DescribeMacro\R
   \DescribeMacro\C
-  \DescribeMacro\P
   These commands are only available if the \opt{commonsets}
   option is given. They typeset the set of natural, integer, rational,
-  real, complex and prime numbers respectively.
+  real and complex numbers respectively.
 \begin{example}
 \begin{equation*}
-  \N, \Z, \Q, \R, \C, \P.
+  \N, \Z, \Q, \R, \C.
 \end{equation*}
 \end{example}
 
@@ -447,12 +445,6 @@ We optionally load \pkg{isomath}, depending on notation style.
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
 \begin{MacroCode}{package}
   \NewDocumentCommand\C{}{\ensuremath{\mathbb{C}}}
-\end{MacroCode}
-  \end{macro}
-  \begin{macro}{\P}
-  \changes{0.4}{Added macro for set of prime numbers}
-\begin{MacroCode}{package}
-  \NewDocumentCommand\P{}{\ensuremath{\mathbb{P}}}
 \end{MacroCode}
   \end{macro}
 \begin{MacroCode}{package}
