@@ -306,6 +306,23 @@
 \end{MacroCode}
 
 We start by declaring internal options related to the notation styles.
+First, some placeholders to detect failures.
+\begin{MacroCode}{package}
+\msg_new:nnnn{skmath}{undefined-macro}{The~macro~`\token_to_str:N#1'~was~undefined!}
+  {This~is~an~error~in~the~notation~option~handling.~Please~file~an~issue\\
+   on~Github~(https://github.com/urdh/skmath/issues)~with~a~copy~of~this\\
+   message~attached~as~well~as~a~list~of~the~options~passed~to~`skmath'.}
+\cs_gset_nopar:Npn\__skmath_integral_d:{
+  \msg_critical:nnn{skmath}{undefined-macro}{\__skmath_integral_d:}
+}
+\cs_gset_nopar:Npn\__skmath_natural_log_e:{
+  \msg_critical:nnn{skmath}{undefined-macro}{\__skmath_natural_log_e:}
+}
+\cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{
+  \msg_critical:nnn{skmath}{undefined-macro}{\__skmath_imaginary_unit:n}
+}
+\end{MacroCode}
+Then, the key-value options.
 \begin{MacroCode}{package}
 \keys_define:nn{skmath / internal}{
   % More on this:
@@ -325,8 +342,8 @@ We start by declaring internal options related to the notation styles.
   natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{e}} },
   imaginary-unit .choice:,
   imaginary-unit .value_required:,
-  imaginary-unit / upright .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{{\operator@font #1}} },
-  imaginary-unit / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{{#1}} },
+  imaginary-unit / upright .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n##1{{\operator@font ##1}} },
+  imaginary-unit / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n##1{{##1}} },
   complex-part-symbols .bool_set_inverse:N = \g__skmath_iso_complex_parts_bool,
   complex-part-symbols .value_required:,
 }
