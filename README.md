@@ -1,3 +1,7 @@
+[![Travis CI](https://img.shields.io/travis/urdh/skmath.svg)](http://travis-ci.org/urdh/skmath)
+[![CTAN: Version](https://img.shields.io/ctan/v/skmath.svg)](http://www.ctan.org/pkg/skmath)
+[![CTAN: License](https://img.shields.io/ctan/l/skmath.svg)](http://www.ctan.org/pkg/skmath)
+```
 %% skmath improved math commands
 %%
 %% Copyright (C) 2012-2015 by Simon Sigurdhsson <sigurdhsson@gmail.com>
@@ -34,3 +38,4 @@ will generate package code and documentation, install it into TEXMFHOME
 and run `mktexlsr`. If you wish to compile the package but not install
 it, run `make all` instead. If you insist on doing it manually, remember
 that you must use `pdflatex` (not `tex` or `latex`).
+```
