@@ -27,3 +27,13 @@ script:
 
 after_success:
   - ./deploy-ctan.sh skmath.tar.gz
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ceQqgJfEN2V4A1Eqd61zBEZ/Dt2L/3jMQtKuU6lgJSJiwUd6igE19HPegGwDSUr48amrms6yoJoTLX5GfeeiNkcvGbregQL92ZiTakIn4NL2s2whBYXRswSMQxOU+mUQz2ugHB3h3PorWmiPcM7W8CrLfcUMBNeProBWLcovOGo=
+  file: skmath.tar.gz
+  skip_cleanup: true
+  on:
+    repo: urdh/skmath
+    tags: true
