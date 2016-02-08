@@ -1,4 +1,4 @@
-[![Travis CI](https://img.shields.io/travis/urdh/skmath.svg)](http://travis-ci.org/urdh/skmath)
+[![Travis CI](https://img.shields.io/travis/urdh/skmath/master.svg)](http://travis-ci.org/urdh/skmath)
 [![CTAN: Version](https://img.shields.io/ctan/v/skmath.svg)](http://www.ctan.org/pkg/skmath)
 [![CTAN: License](https://img.shields.io/ctan/l/skmath.svg)](http://www.ctan.org/pkg/skmath)
 ```
