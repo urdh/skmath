@@ -784,18 +784,20 @@ We optionally load \pkg{isomath}, depending on notation style.
     {Token or string}
 \begin{MacroCode}{package}
 \prg_new_conditional:Npnn\__skmath_if_numerical:n#1{p,T,F,TF}{
-  \str_case_x:nnn{#1}{
-    {0}{\prg_return_true:}
-    {1}{\prg_return_true:}
-    {2}{\prg_return_true:}
-    {3}{\prg_return_true:}
-    {4}{\prg_return_true:}
-    {5}{\prg_return_true:}
-    {6}{\prg_return_true:}
-    {7}{\prg_return_true:}
-    {8}{\prg_return_true:}
-    {9}{\prg_return_true:}
-  }{\prg_return_false:}
+  \str_case_x:nnTF{#1}{
+    {0}{}
+    {1}{}
+    {2}{}
+    {3}{}
+    {4}{}
+    {5}{}
+    {6}{}
+    {7}{}
+    {8}{}
+    {9}{}
+  }
+  {\prg_return_false:}
+  {\prg_return_false:}
 }
 \end{MacroCode}
   \end{macro*}
