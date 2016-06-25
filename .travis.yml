@@ -8,6 +8,7 @@ env:
     - NAME="Simon Sigurdhsson"
     - EMAIL="Sigurdhsson@gmail.com"
     - DIRECTORY=/macros/latex/contrib/skmath
+    - SUMMARY="Extensions to the maths command repertoir"
     - LICENSE=free
     - FREEVERSION=lppl
 
