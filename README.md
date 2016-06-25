@@ -4,7 +4,7 @@
 ```
 %% skmath improved math commands
 %%
-%% Copyright (C) 2012-2015 by Simon Sigurdhsson <sigurdhsson@gmail.com>
+%% Copyright (C) 2012-2016 by Simon Sigurdhsson <sigurdhsson@gmail.com>
 %%
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -21,7 +21,7 @@
 %% This work consists of the file skmath.tex
 %% and the derived file skmath.sty.
 
-This is version 0.4 of the skmath package, a package which provides
+This is version 0.4a of the skmath package, a package which provides
 improved and new math commands for superior typesetting with lower effort.
 
 The following files are enclosed.
