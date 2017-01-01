@@ -333,21 +333,21 @@ Then, the key-value options.
   % * http://www.tug.org/TUGboat/Articles/tb18-1/tb54becc.pdf
   % * http://tex.stackexchange.com/q/14821/66
   integral-d .choice:,
-  integral-d .value_required:,
+  integral-d .value_required:n = true,
   integral-d / upright .code:n = { \cs_gset_nopar:Npn\__skmath_integral_d:{{\operator@font d}} },
   integral-d / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_integral_d:{{d}} },
   isomath .bool_set:N = \g__skmath_load_isomath_bool,
-  isomath .value_required:,
+  isomath .value_required:n = true,
   natural-log .choice:,
-  natural-log .value_required:,
+  natural-log .value_required:n = true,
   natural-log / upright .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{\operator@font e}} },
   natural-log / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_natural_log_e:{{e}} },
   imaginary-unit .choice:,
-  imaginary-unit .value_required:,
+  imaginary-unit .value_required:n = true,
   imaginary-unit / upright .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n##1{{\operator@font ##1}} },
   imaginary-unit / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n##1{{##1}} },
   complex-part-symbols .bool_set_inverse:N = \g__skmath_iso_complex_parts_bool,
-  complex-part-symbols .value_required:,
+  complex-part-symbols .value_required:n = true,
 }
 \end{MacroCode}
 
@@ -389,7 +389,7 @@ We also declare the \enquote{public} options.
   },
   % Possibly more style sets... ?
   notation .initial:n = legacy, % Or is it? Perhaps a legacy option is required.
-  notation .value_required:,
+  notation .value_required:n = true,
   % Note also that the styles should probably affect isomath and/or other packages.
 }
 \ProcessKeysOptions{skmath}
