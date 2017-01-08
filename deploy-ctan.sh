@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ "$TRAVIS_TAG" ]]; then
   printf "\033[33;1mCommit is tagged with $TRAVIS_TAG, deploying to CTAN...\033[0m\n"
   # 1. Install ctanupload
+  cpanm WWW::Mechanize     || exit 1;
+  cpanm HTML::TreeBuilder  || exit 1;
+  cpanm HTML::FormatText   || exit 1;
   tlmgr install ctanupload || exit 1;
+if [[ "$TRAVIS_TAG" ]]; then
   # 2. Set up and sanity-check environment
   [[ "$CONTRIBUTION" && "$NAME" && "$EMAIL" && "$DIRECTORY" && "$SUMMARY" ]] || exit 2;
   [[ "$LICENSE" ]] || LICENSE="other-nonfree";
