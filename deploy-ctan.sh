@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+if [[ "$TRAVIS_TAG" ]]; then
   printf "\033[33;1mCommit is tagged with $TRAVIS_TAG, deploying to CTAN...\033[0m\n"
   # 0. Install perl modules
   curl -L https://cpanmin.us | perl - App::cpanminus
@@ -10,7 +11,6 @@
   eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"
   # 1. Install ctanupload
   tlmgr install ctanupload || exit 1;
-if [[ "$TRAVIS_TAG" ]]; then
   # 2. Set up and sanity-check environment
   [[ "$CONTRIBUTION" && "$NAME" && "$EMAIL" && "$DIRECTORY" && "$SUMMARY" ]] || exit 2;
   [[ "$LICENSE" ]] || LICENSE="other-nonfree";
