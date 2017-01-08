@@ -21,7 +21,7 @@
 %% This work consists of the file skmath.tex
 %% and the derived file skmath.sty.
 
-This is version 0.4a of the skmath package, a package which provides
+This is version 0.4b of the skmath package, a package which provides
 improved and new math commands for superior typesetting with lower effort.
 
 The following files are enclosed.

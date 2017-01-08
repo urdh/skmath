@@ -56,7 +56,7 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.4a}
+  \version{0.4b}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
@@ -68,6 +68,7 @@
   \changes{0.3b}{Detect empty arguments in trigonometric and logarithmic functions, fix \cs{ln}}
   \changes{0.4}{Added \opt{notation} option, macros for complex numbers}
   \changes{0.4a}{Replaced deprecated/removed \pkg{expl3} constructs}
+  \changes{0.4b}{Track \pkg{expl3} changes (thanks to Joseph Wright)}
   % Don't forget to update the version number and release date of
   % the package declaration in the implementation!
 
@@ -302,7 +303,7 @@
 \begin{MacroCode}{package}
 \RequirePackage{expl3,l3keys2e,xparse}
 \ProvidesExplPackage{skmath}
-    {2016/06/25}{0.4a}{improved math commands}
+    {2017/01/08}{0.4b}{improved math commands}
 \PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
 \RequirePackage{amssymb,mathtools,xfrac}
 \end{MacroCode}
