@@ -24,6 +24,7 @@ install:
   - tlmgr install ly1
   - tlmgr install xindy
   - tlmgr install mweights
+  - tlmgr install isomath
   - tlmgr remove --force skmath || true
 
 script:
