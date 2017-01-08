@@ -24,7 +24,7 @@ install:
   - tlmgr install ly1
   - tlmgr install xindy
   - tlmgr install mweights
-  - tlmgr remove --force skmath
+  - tlmgr remove --force skmath || true
 
 script:
   - make dist
