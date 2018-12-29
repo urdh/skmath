@@ -38,6 +38,7 @@
 \ProvideDocumentCommand\C{}{}
 \ProvideDocumentCommand\ii{}{i}
 \ProvideDocumentCommand\jj{}{j}
+\ProvideDocumentCommand\ee{}{e}
 \ProvideDocumentCommand\sfrac{mm}{#1#2}
 \ProvideDocumentCommand\argmin{om}{#1}
 \ProvideDocumentCommand\argmax{om}{#1}
@@ -70,7 +71,7 @@
   \changes{0.4}{Added \opt{notation} option, macros for complex numbers}
   \changes{0.4a}{Replaced deprecated/removed \pkg{expl3} constructs}
   \changes{0.4b}{Track \pkg{expl3} changes (thanks to Joseph Wright)}
-  \changes{0.5}{Added \cs{td}}
+  \changes{0.5}{Added \cs{td} and \cs{ee}}
   % Don't forget to update the version number and release date of
   % the package declaration in the implementation!
 
@@ -132,6 +133,10 @@
   mathematics or \(\jj\) as used in electrotechnology). While normal use
   of the package simply results in italic characters, setting the \opt{notation}
   option to \texttt{iso} will set these upright.
+
+  \DescribeMacro\ee
+  This command typesets Euler's number \(\ee = \sum_{n=0}^\infty\frac{1}{n!}\).
+  The style is affected by the \opt{notation} option in the same way as \Macro\exp.
 
   \DescribeMacro\norm{<expression>}
   \DescribeMacro\abs{<expression>}
@@ -243,7 +248,7 @@
 
   \DescribeMacro\exp*{<expression>}
   The exponential, \Macro\exp, is redefined to typeset its argument as a
-  superscript of \(e\) in some display styles, and as an argument of
+  superscript of \(\ee\) in some display styles, and as an argument of
   \(\mathrm{exp}\) otherwise:
   \begin{equation*}
     \exp{\sqrt{2}\exp{x}}
@@ -717,6 +722,11 @@ We optionally load \pkg{isomath}, depending on notation style.
     {\ensuremath{\__skmath_log:\c_math_subscript_token{#1}\__skmath_parens:n{#2}}}%
 }
 \end{MacroCode}
+  \end{macro}
+  \begin{macro}{\ee}
+    \begin{MacroCode}{package}
+    \DeclareDocumentCommand\ee{}{\ensuremath{\__skmath_natural_log_e:}}
+    \end{MacroCode}
   \end{macro}
   \begin{macro}{\exp}
   \changes{0.1b}{Moved to \textsf{xparse} command definition}
