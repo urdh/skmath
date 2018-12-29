@@ -22,6 +22,7 @@
 \usepackage{csquotes}
 \ProvideDocumentCommand\d{m}{#1}
 \ProvideDocumentCommand\pd{smm}{#2#3}
+\ProvideDocumentCommand\td{mm}{#1#2}
 \ProvideDocumentCommand\abs{m}{#1}
 \ProvideDocumentCommand\norm{m}{#1}
 \ProvideDocumentCommand\abs{m}{#1}
@@ -69,6 +70,7 @@
   \changes{0.4}{Added \opt{notation} option, macros for complex numbers}
   \changes{0.4a}{Replaced deprecated/removed \pkg{expl3} constructs}
   \changes{0.4b}{Track \pkg{expl3} changes (thanks to Joseph Wright)}
+  \changes{0.5}{Added \cs{td}}
   % Don't forget to update the version number and release date of
   % the package declaration in the implementation!
 
@@ -168,6 +170,15 @@
   As the example shows, the comma-separated list of variables also
   supports superscripts to denote the number of derivatives, and the
   sum of the variables is automatically calculated.
+
+  \DescribeMacro\td{<function>}{<var>}
+  This macro typesets a total derivative. Unlike \Macro\pd, this macro does
+  not have a starred variant, and only typesets full fractions:
+\begin{example}
+\begin{equation*}
+  \td{f}{x^m}
+\end{equation*}
+\end{example}
 
   \DescribeMacro\E{<expression>}
   The command \Macro\E typesets the expectation of a random variable.
@@ -324,6 +335,9 @@ First, some placeholders to detect failures.
 \cs_gset_nopar:Npn\__skmath_imaginary_unit:n#1{
   \msg_critical:nnn{skmath}{undefined-macro}{\__skmath_imaginary_unit:n}
 }
+\cs_gset_nopar:Npn\__skmath_total_derivative_d:{
+  \msg_critical:nnn{skmath}{undefined-macro}{\__skmath_total_derivative_d:n}
+}
 \end{MacroCode}
 Then, the key-value options.
 \begin{MacroCode}{package}
@@ -349,6 +363,10 @@ Then, the key-value options.
   imaginary-unit / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_imaginary_unit:n##1{{##1}} },
   complex-part-symbols .bool_set_inverse:N = \g__skmath_iso_complex_parts_bool,
   complex-part-symbols .value_required:n = true,
+  total-derivative-d .choice:,
+  total-derivative-d .value_required:n = true,
+  total-derivative-d / upright .code:n = { \cs_gset_nopar:Npn\__skmath_total_derivative_d:{{\operator@font d}} },
+  total-derivative-d / slanted .code:n = { \cs_gset_nopar:Npn\__skmath_total_derivative_d:{{d}} },
 }
 \end{MacroCode}
 
@@ -366,6 +384,7 @@ We also declare the \enquote{public} options.
     natural-log = upright,
     imaginary-unit = upright,
     complex-part-symbols = false,
+    total-derivative-d = upright,
   },
   notation / german .meta:nn = {skmath / internal}{
     integral-d = upright,
@@ -373,6 +392,7 @@ We also declare the \enquote{public} options.
     natural-log = slanted, %???
     imaginary-unit = slanted, %???
     complex-part-symbols = true, %???
+    total-derivative-d = upright, %???
   },
   notation / english .meta:nn = {skmath / internal}{
     integral-d = slanted,
@@ -380,6 +400,7 @@ We also declare the \enquote{public} options.
     natural-log = slanted, %???
     imaginary-unit = slanted, %???
     complex-part-symbols = true, %???
+    total-derivative-d = slanted, %???
   },
   notation / legacy .meta:nn = {skmath / internal}{
     integral-d = upright,
@@ -387,6 +408,7 @@ We also declare the \enquote{public} options.
     natural-log = slanted,
     imaginary-unit = slanted,
     complex-part-symbols = true,
+    total-derivative-d = slanted,
   },
   % Possibly more style sets... ?
   notation .initial:n = legacy, % Or is it? Perhaps a legacy option is required.
@@ -778,7 +800,7 @@ We optionally load \pkg{isomath}, depending on notation style.
 \end{MacroCode}
   \end{macro}
 
-  We introduce a couple of helper macros for the \cs{pd} macro backend.
+  We introduce a couple of helper macros for \cs{pd} and \cs{td}.
   \begin{macro*}{\__skmath_if_numerical_p:n}
   \begin{macro*}{\__skmath_if_numerical:nT}
   \begin{macro*}{\__skmath_if_numerical:nF}
@@ -926,8 +948,26 @@ We optionally load \pkg{isomath}, depending on notation style.
 }
 \end{MacroCode}
   \end{macro*}
+  \begin{macro*}{\__skmath_td_fraction:nn}[2]
+    {Tokens representing a mathematical function}
+    {A single variable, possibly with a superscript}
+\begin{MacroCode}{package}
+\cs_new_nopar:Npn\__skmath_td_fraction:nn#1#2{
+  \frac{
+    \__skmath_total_derivative_d:
+    \__skmath_pd_if_vars_sum_above_one:nT{#2}{
+      \c_math_superscript_token{\__skmath_pd_vars_sum:n{#2}}
+    }
+    {#1}
+  }{
+    \__skmath_total_derivative_d:
+    #2
+  }
+}
+\end{MacroCode}
+  \end{macro*}
 
-  Definition of \cs{bar}, \cs{pd} and \cs{d} is deferred until after all
+  Definition of \cs{bar}, \cs{pd}, \cs{td} and \cs{d} is deferred until after all
   packages are loaded to avoid collisions with other packages.
 \begin{MacroCode}{package}
 \AtBeginDocument{%
@@ -954,6 +994,19 @@ We optionally load \pkg{isomath}, depending on notation style.
     \IfBooleanTF{#1}
       {\__skmath_pd_subscript:nn{#2}{#3}}
       {\__skmath_pd_fraction:nn{#2}{#3}}
+  }
+}
+\end{MacroCode}
+  \end{macro}
+
+  We also have the total derivative macro,
+  \begin{macro}{\td}[2]
+    {Tokens representing a mathematical function}
+    {A single variable, possibly with a superscript}
+\begin{MacroCode}{package}
+\DeclareDocumentCommand\td{mm}{
+  \ensuremath{
+    \__skmath_td_fraction:nn{#1}{#2}
   }
 }
 \end{MacroCode}
