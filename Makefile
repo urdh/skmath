@@ -28,24 +28,14 @@ install: all
 	install -m 0644 README $(TEXMFHOME)/doc/latex/skmath/README
 	-mktexlsr
 
-skmath.tds.zip: all
-	mkdir -p skmath/tex/latex/skmath
-	cp skmath.sty skmath/tex/latex/skmath/skmath.sty
-	mkdir -p skmath/doc/latex/skmath
-	cp skmath.pdf skmath/doc/latex/skmath/skmath.pdf
-	mkdir -p skmath/source/latex/skmath
-	cp skmath.tex skmath/source/latex/skmath/skmath.tex
-	cp README skmath/doc/latex/skmath/README
-	cd skmath && zip -r ../skmath.tds.zip *
-	rm -rf skmath
-
-skmath.tar.gz: all skmath.tds.zip
-	mkdir -p skmath
-	cp skmath.tex skmath/skmath.tex
+skmath.tar.gz: all
+	mkdir -p      skmath
+	cp README     skmath/README
+	cp Makefile   skmath/Makefile
 	cp skmath.pdf skmath/skmath.pdf
-	cp README skmath/README
-	cp Makefile skmath/Makefile
-	tar -czf $@ skmath skmath.tds.zip
+	cp skmath.tex skmath/skmath.tex
+	cp skmath.sty skmath/skmath.sty
+	tar -czf $@ skmath
 	rm -rf skmath
 
 dist: skmath.tar.gz
