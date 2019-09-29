@@ -1,3 +1,13 @@
+ZIP_NOATTRS :=
+ifeq ($(shell uname -s),Darwin)
+	ZIP_NOATTRS += -X
+endif
+
+TAR_NOATTRS :=
+ifeq ($(shell uname -s),Darwin)
+	TAR_NOATTRS += --disable-copyfile
+endif
+
 TEXMFHOME ?= $(shell kpsewhich -var-value TEXMFHOME)
 .PHONY: all clean distclean install dist test clean-test
 all: skmath.tex skmath.pdf skmath.sty README
@@ -36,7 +46,7 @@ skmath.tds.zip: all
 	mkdir -p skmath/source/latex/skmath
 	cp skmath.tex skmath/source/latex/skmath/skmath.tex
 	cp README skmath/doc/latex/skmath/README
-	cd skmath && zip -r ../skmath.tds.zip *
+	cd skmath && zip $(ZIP_NOATTRS) -r ../skmath.tds.zip *
 	rm -rf skmath
 
 skmath.tar.gz: all skmath.tds.zip
@@ -45,7 +55,7 @@ skmath.tar.gz: all skmath.tds.zip
 	cp skmath.pdf skmath/skmath.pdf
 	cp README skmath/README
 	cp Makefile skmath/Makefile
-	tar -czf $@ skmath skmath.tds.zip
+	tar $(TAR_NOATTRS) -czf $@ skmath skmath.tds.zip
 	rm -rf skmath
 
 dist: skmath.tar.gz
