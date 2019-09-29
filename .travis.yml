@@ -37,7 +37,7 @@ after_success:
 deploy:
   provider: releases
   api_key:
-    secure: ceQqgJfEN2V4A1Eqd61zBEZ/Dt2L/3jMQtKuU6lgJSJiwUd6igE19HPegGwDSUr48amrms6yoJoTLX5GfeeiNkcvGbregQL92ZiTakIn4NL2s2whBYXRswSMQxOU+mUQz2ugHB3h3PorWmiPcM7W8CrLfcUMBNeProBWLcovOGo=
+    secure: F+x6zV1wGUKu/R+vduT4zQJB4D66zsZB9wnKrVsYmS+l/huDBAhe6SB6XAlNUeqoHD0CdrKjfw135ittS5LVyIuvyGZ7QuT6h4qlfb7zPCOWwrrQd0rZUkJ3CqMUD9Oain3pTSqAiO/Qh6WA8HXGFHeCuKSTEwfJF0KxeCsyqw0=
   file: skmath.tar.gz
   skip_cleanup: true
   on:
