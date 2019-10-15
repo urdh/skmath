@@ -58,7 +58,7 @@
 % This is where the documentation begins
 \begin{document}
   % Change & version info
-  \version{0.5}
+  \version{0.5a}
   \changes{0.1}{Initial version}
   \changes{0.1c}{Moved package from \pkg{docstrip} to \pkg{skdoc}}
   \changes{0.1d}{Fixed fatal documentation and package errors}
@@ -306,6 +306,10 @@
         is due to the redifinition of \cs{sin} (and friends), which
         is incompatible with the original \pkg{amsmath} definition.
         This is a feature, not a bug.
+      \item[\#29] The spacing between operator names and parentheses
+        is typographically incorrect. A work-around until this is
+        fixed in \pkg{skmath} is to use the \cs{mleftright} macro from
+        \pkg{mleftright} to redefine \cs{left} and \cs{right}.
   \end{description}
 
   If you discover any bugs in this package, please report them to the issue
@@ -320,7 +324,7 @@
 \begin{MacroCode}{package}
 \RequirePackage{expl3,l3keys2e,xparse}
 \ProvidesExplPackage{skmath}
-    {2018/12/29}{0.5}{improved math commands}
+    {2019/10/15}{0.5a}{improved math commands}
 \PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
 \RequirePackage{amssymb,mathtools,xfrac}
 \end{MacroCode}
