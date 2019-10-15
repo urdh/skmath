@@ -72,6 +72,7 @@
   \changes{0.4a}{Replaced deprecated/removed \pkg{expl3} constructs}
   \changes{0.4b}{Track \pkg{expl3} changes (thanks to Joseph Wright)}
   \changes{0.5}{Added \cs{td} and \cs{ee}}
+  \changes{0.6}{Uses \cs{mleft} and \cs{mright} from \pkg{mleftright} for better spacing}
   % Don't forget to update the version number and release date of
   % the package declaration in the implementation!
 
@@ -321,7 +322,7 @@
 \ProvidesExplPackage{skmath}
     {2018/12/29}{0.5}{improved math commands}
 \PassOptionsToPackage{intlimits,sumlimits,namelimits}{amsmath}
-\RequirePackage{amssymb,mathtools,xfrac}
+\RequirePackage{amssymb,mathtools,mleftright,xfrac}
 \end{MacroCode}
 
 We start by declaring internal options related to the notation styles.
@@ -455,7 +456,7 @@ We optionally load \pkg{isomath}, depending on notation style.
     {Argument to wrap in parentheses, unless empty}
 \begin{MacroCode}{package}
 \cs_new_nopar:Npn\__skmath_parens:n#1{
-  \__skmath_if_novalue_or_empty:nF{#1}{\left(#1\right)}
+  \__skmath_if_novalue_or_empty:nF{#1}{\mleft(#1\mright)}
 }
 \end{MacroCode}
   \end{macro*}
@@ -551,7 +552,7 @@ We optionally load \pkg{isomath}, depending on notation style.
 \begin{MacroCode}{package}
 \AtBeginDocument{
   \DeclareDocumentCommand\E{m}{%
-    \ensuremath{\operatorname{E}\left[#1\right]}%
+    \ensuremath{\operatorname{E}\mleft[#1\mright]}%
   }
 }
 \end{MacroCode}
@@ -565,7 +566,7 @@ We optionally load \pkg{isomath}, depending on notation style.
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\P{m}{%
   \ensuremath{\operatorname{P}%
-    \mkern-1.5mu\left(%
+    \mleft(%
     \cs_set_eq:NN\__skmath_saved_given:\given%
 \end{MacroCode}
   \begin{macro}{\given}
@@ -577,7 +578,7 @@ We optionally load \pkg{isomath}, depending on notation style.
 \begin{MacroCode}{package}
     #1%
     \cs_set_eq:NN\given\__skmath_saved_given:%
-    \right)%
+    \mright)%
   }%
 }
 \end{MacroCode}
@@ -587,7 +588,7 @@ We optionally load \pkg{isomath}, depending on notation style.
   \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\var{m}{%
-  \ensuremath{\operatorname{Var}\left(#1\right)}%
+  \ensuremath{\operatorname{Var}\mleft(#1\mright)}%
 }
 \end{MacroCode}
   \end{macro}
@@ -596,7 +597,7 @@ We optionally load \pkg{isomath}, depending on notation style.
   \changes{0.2}{Use \cs{operatorname}}
 \begin{MacroCode}{package}
 \DeclareDocumentCommand\cov{mm}{%
-  \ensuremath{\operatorname{Cov}\left(#1,#2\right)}%
+  \ensuremath{\operatorname{Cov}\mleft(#1,#2\mright)}%
 }
 \end{MacroCode}
   \end{macro}
@@ -738,9 +739,9 @@ We optionally load \pkg{isomath}, depending on notation style.
   }{
     \mathchoice
       {\__skmath_natural_log_e:\c_math_superscript_token{#2}}
-      {\__skmath_exp:\left(#2\right)}
-      {\__skmath_exp:\left(#2\right)}
-      {\__skmath_exp:\left(#2\right)}
+      {\__skmath_exp:\mleft(#2\mright)}
+      {\__skmath_exp:\mleft(#2\mright)}
+      {\__skmath_exp:\mleft(#2\mright)}
   }
 }}
 \end{MacroCode}
@@ -754,7 +755,7 @@ We optionally load \pkg{isomath}, depending on notation style.
       \mathchoice{\mathclap{#3}}{#3}{#3}{#3}
     }
   }
-  \IfBooleanTF{#2}{#4}{\left\{#4\right\}}
+  \IfBooleanTF{#2}{#4}{\mleft\{#4\mright\}}
 }
 \end{MacroCode}
   \end{macro*}
