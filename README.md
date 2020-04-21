@@ -1,6 +1,6 @@
-[![Travis CI](https://img.shields.io/travis/urdh/skmath/master.svg)](http://travis-ci.org/urdh/skmath)
-[![CTAN: Version](https://img.shields.io/ctan/v/skmath.svg)](http://www.ctan.org/pkg/skmath)
-[![CTAN: License](https://img.shields.io/ctan/l/skmath.svg)](http://www.ctan.org/pkg/skmath)
+[![Travis CI](https://img.shields.io/travis/urdh/skmath/master)](http://travis-ci.org/urdh/skmath)
+[![CTAN: Version](https://img.shields.io/ctan/v/skmath)](http://www.ctan.org/pkg/skmath)
+[![CTAN: License](https://img.shields.io/ctan/l/skmath)](http://www.ctan.org/pkg/skmath)
 ```
 %% skmath improved math commands
 %%
