@@ -49,13 +49,12 @@ skmath.tds.zip: all
 	cd skmath && zip $(ZIP_NOATTRS) -r ../skmath.tds.zip *
 	rm -rf skmath
 
-skmath.tar.gz: all skmath.tds.zip
+skmath.tar.gz: all
 	mkdir -p skmath
 	cp skmath.tex skmath/skmath.tex
 	cp skmath.pdf skmath/skmath.pdf
 	cp README skmath/README
 	cp Makefile skmath/Makefile
-	tar $(TAR_NOATTRS) -czf $@ skmath skmath.tds.zip
 	rm -rf skmath
 
 dist: skmath.tar.gz

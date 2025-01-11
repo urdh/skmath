@@ -39,11 +39,11 @@ jobs:
             skdoc
             amsmath
             catchfile
+            fixmath
             framed
             fvextra
             isomath
             upquote
-            was
       - run: sudo apt-get install -y libncurses5
       - run: make dist
       - run: make test
