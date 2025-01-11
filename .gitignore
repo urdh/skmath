@@ -45,6 +45,7 @@
 *.tmp
 *.glsdefs
 _minted-*
+_minted
 skmath.tar.gz
 skmath.tds.zip
 README
