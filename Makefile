@@ -55,6 +55,7 @@ skmath.tar.gz: all
 	cp skmath.pdf skmath/skmath.pdf
 	cp README skmath/README
 	cp Makefile skmath/Makefile
+	tar $(TAR_NOATTRS) -czf $@ skmath
 	rm -rf skmath
 
 dist: skmath.tar.gz
