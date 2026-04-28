@@ -1,0 +1,12 @@
+image: alpine/latest
+packages:
+  - hut
+oauth: pages.sr.ht/PAGES:RW
+sources:
+  - https://github.com/urdh/skmath#gh-pages
+
+tasks:
+  - package: |
+      tar -C skmath -czf pages.tar.gz index.html
+  - upload: |
+      hut pages publish -d projects.sigurdhsson.org -s skmath pages.tar.gz
